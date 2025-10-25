@@ -7,7 +7,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://161.248.189.58/~mkhandev/myapp/public/api/v1/categories")
+    fetch("/api/categories")
       .then(async (res) => {
         console.log("Status:", res.status);
         const text = await res.text();
