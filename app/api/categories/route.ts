@@ -1,4 +1,4 @@
-const API_BASE = "https://mkhandev.kesug.com/api/v1"; // 👈 your Laravel API base URL
+const API_BASE = "http://161.248.189.58/~mkhandev/myapp/public/api/v1"; // 👈 your Laravel API base URL
 
 const ALLOWED_ORIGIN =
   process.env.NODE_ENV === "production"
