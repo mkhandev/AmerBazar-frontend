@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const res = await fetch(
-      "http://161.248.189.58/~mkhandev/myapp/public/api/v1/categories"
+      "https://161.248.189.58/~mkhandev/myapp/public/api/v1/categories"
     );
 
     if (!res.ok) {
       return NextResponse.json(
-        { error: "Failed to fetch categories" },
+        { error: "Failed to fetch products" },
         { status: 500 }
       );
     }
