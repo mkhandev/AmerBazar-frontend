@@ -11,7 +11,7 @@ const Search = () => {
           name="q"
           type="text"
           placeholder="Search..."
-          className="w-full md:w-[100px] lg:w-[500px]"
+          className="w-full md:w-[100px] lg:w-[500px] bg-white"
         />
 
         <Button>

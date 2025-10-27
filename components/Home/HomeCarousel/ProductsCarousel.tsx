@@ -7,33 +7,44 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import Image from "next/image";
+import Link from "next/link";
+
+const slides = [
+  "/images/slider/slider1.jpg",
+  "/images/slider/slider2.jpg",
+  "/images/slider/slider3.jpg",
+];
 
 const ProductsCarousel = () => {
   return (
     <>
       <Carousel
-        className="w-full"
+        className="w-full my-5"
         opts={{
           loop: true,
         }}
         plugins={[
           Autoplay({
-            delay: 5000,
+            delay: 4000,
             stopOnInteraction: true,
             stopOnMouseEnter: true,
           }),
         ]}
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
+          {Array.from({ length: 3 }).map((_, index) => (
             <CarouselItem key={index}>
-              <div className="p-1">
-                <Card className="h-[200px]">
-                  <CardContent className="flex aspect-square items-center justify-center p-6">
-                    <span className="text-4xl font-semibold">{index + 1}</span>
-                  </CardContent>
-                </Card>
-              </div>
+              <Link href="/">
+                <img
+                  src={slides[index]}
+                  alt=""
+                  height="0"
+                  width="0"
+                  sizes="100vw"
+                  className="w-full h-auto max-h-[450px]"
+                />
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>
