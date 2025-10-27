@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "next-themes";
+import { ReactQueryProviders } from "@/components/ReactQueryProviders";
 
 export const metadata: Metadata = {
   title: "AmerBazar",
@@ -17,15 +18,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          <main className="container mx-auto">{children}</main>
-        </ThemeProvider>
+        <ReactQueryProviders>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            <main className="container mx-auto">{children}</main>
+          </ThemeProvider>
+        </ReactQueryProviders>
       </body>
     </html>
   );
