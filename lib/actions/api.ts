@@ -1,4 +1,4 @@
-import { apiUrl } from "@/lib/constants/common";
+import { apiUrl } from "@/lib/constants";
 import { ProductApiResponse } from "@/types/products";
 
 export async function fetchCategories() {

@@ -34,7 +34,7 @@ const NewArrivalProduct = () => {
     <div>
       <ProductList products={products} />
       {hasNextPage && (
-        <div className="mt-10 mb-7">
+        <div className="mt-10">
           <button
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
