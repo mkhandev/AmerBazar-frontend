@@ -1,12 +1,25 @@
-"use client";
+import SearchPageClient from "@/components/SearchPageClient";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
-import dynamic from "next/dynamic";
+export const dynamic = "force-dynamic";
 
-const SearchPageClient = dynamic(
-  () => import("@/components/SearchPageClient"),
-  { ssr: false }
-);
+type SearchParams = {
+  q?: string;
+  category?: string;
+  page?: string;
+};
 
-export default function SearchPageWrapper() {
-  return <SearchPageClient />;
-}
+const SearchPage = async (props: any) => {
+  const searchParams = await props.searchParams;
+
+  console.log(searchParams);
+
+  return (
+    <Suspense fallback={<Skeleton className="w-64 h-10 rounded-md" />}>
+      <SearchPageClient searchParams={searchParams} />
+    </Suspense>
+  );
+};
+
+export default SearchPage;

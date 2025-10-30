@@ -5,20 +5,23 @@ import { fetchCategories, fetchProducts } from "@/lib/actions/api";
 import { Product, ProductApiResponse } from "@/types/products";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { use, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 const ProductSkeleton = () => (
   <div className="animate-pulse bg-gray-200 h-48 w-full rounded-md"></div>
 );
 
-const SearchPage = () => {
-  const searchParams = useSearchParams();
+const SearchPageClient = ({
+  searchParams,
+}: {
+  searchParams: { q?: string; category?: string; page?: number };
+}) => {
   const router = useRouter();
 
-  const q = searchParams.get("q") || "";
-  const category = searchParams.get("category") || "";
+  const q = searchParams.q || "";
+  const category = searchParams.category || "";
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -37,7 +40,8 @@ const SearchPage = () => {
       getNextPageParam: (lastPage) => {
         if (lastPage.next_page_url) {
           const url = new URL(lastPage.next_page_url);
-          return Number(url.searchParams.get("page") ?? 1);
+          //return Number(url.searchParams.get("page") ?? 1);
+          return Number(searchParams.page ?? 1);
         }
         return undefined;
       },
@@ -51,8 +55,12 @@ const SearchPage = () => {
   }, [inView, hasNextPage, fetchNextPage]);
 
   const handleCategoryClick = (catId: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+    //const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
+
     params.set("category", catId);
+    params.set("q", searchParams.q || "");
+
     router.push(`/search?${params.toString()}`);
   };
 
@@ -97,4 +105,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default SearchPageClient;
