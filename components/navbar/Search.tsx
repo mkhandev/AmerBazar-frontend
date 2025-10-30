@@ -3,17 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const Search = () => {
-  const [search, setSearch] = useState("");
+  //const [search, setSearch] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [search, setSearch] = useState(searchParams.get("q") || "");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    //if (!search.trim()) return;
-    router.push(`/search?q=${encodeURIComponent(search.trim())}`);
+
+    const category = searchParams.get("category");
+    const query = new URLSearchParams();
+
+    if (category) query.set("category", category);
+    if (search.trim()) query.set("q", search.trim());
+
+    router.push(`/search?${query.toString()}`);
   };
 
   return (
