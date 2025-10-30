@@ -3,6 +3,7 @@ import UserNavigation from "@/components/navbar/UserNavigation";
 import Search from "@/components/navbar/Search";
 import UserMenu from "@/components/navbar/UserMenu";
 import MenuDrawer from "@/components/navbar/MenuDrawer";
+import { Suspense } from "react";
 
 const Navbar = () => {
   return (
@@ -14,7 +15,9 @@ const Navbar = () => {
         </div>
 
         <MenuDrawer />
-        <Search />
+        <Suspense fallback={<></>}>
+          <Search />
+        </Suspense>
         <UserMenu />
       </div>
     </nav>

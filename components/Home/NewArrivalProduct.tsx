@@ -18,7 +18,8 @@ const NewArrivalProduct = () => {
     queryFn: ({ pageParam }: QueryFunctionContext) =>
       fetchProducts(pageParam as number),
     getNextPageParam: (lastPage) => {
-      return lastPage.data.length > 0 ? lastPage.current_page + 1 : undefined;
+      if (lastPage.next_page_url) return lastPage.current_page + 1;
+      return undefined;
     },
     initialPageParam: 1,
   });
