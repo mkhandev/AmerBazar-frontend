@@ -16,13 +16,19 @@ export async function fetchProductsOld(
 
 export async function fetchProducts(
   page: number = 1,
+  q?: string,
   category?: string,
-  q?: string
+  price?: string,
+  rating?: string,
+  sortby?: string
 ): Promise<ProductApiResponse> {
   const params = new URLSearchParams();
   params.set("page", String(page));
-  if (category) params.set("category", category);
   if (q) params.set("q", q);
+  if (category) params.set("category", category);
+  if (price) params.set("price", price);
+  if (rating) params.set("rating", rating);
+  if (sortby) params.set("sortby", sortby);
 
   const res = await fetch(`${apiUrl}/products?${params}`);
   if (!res.ok) throw new Error("Failed to fetch products");

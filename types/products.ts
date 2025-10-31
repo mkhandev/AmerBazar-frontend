@@ -68,3 +68,12 @@ export type ProductApiResponse = {
   next_page_url: string | null;
   prev_page_url: string | null;
 };
+
+export type PARAMS = {
+  q: string;
+  category: string | number;
+  price: string | number;
+  rating: string | number;
+  sort: string;
+  page: string | number;
+};

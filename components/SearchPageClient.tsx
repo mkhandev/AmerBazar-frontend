@@ -1,11 +1,19 @@
 "use client";
 
 import ProductCard from "@/components/Product/ProductCard";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { fetchCategories, fetchProducts } from "@/lib/actions/api";
-import { Product, ProductApiResponse } from "@/types/products";
+import { PRICES, RATINGS } from "@/lib/constants";
+import { PARAMS, Product, ProductApiResponse } from "@/types/products";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { use, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -16,32 +24,41 @@ const ProductSkeleton = () => (
 const SearchPageClient = ({
   searchParams,
 }: {
-  searchParams: { q?: string; category?: string; page?: number };
+  searchParams: {
+    q?: string;
+    category?: string;
+    price?: string;
+    rating?: string;
+    sortby?: string;
+  };
 }) => {
-  const router = useRouter();
+  const { q, category, price, rating, sortby } = searchParams;
 
-  const q = searchParams.q || "";
-  const category = searchParams.category || "";
+  const router = useRouter();
+  const queryParams = useSearchParams();
 
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: fetchCategories,
   });
 
+  const selectedCategory = categories?.find(
+    (cat: any) => String(cat.id) === category
+  );
+
   const { ref, inView } = useInView();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery<ProductApiResponse, Error>({
-      queryKey: ["products", category, q],
+      queryKey: ["products", q, category, price, rating, sortby],
       queryFn: ({ pageParam }) => {
         const page = (pageParam as number) || 1;
-        return fetchProducts(page, category, q);
+        return fetchProducts(page, q, category, price, rating, sortby);
       },
       getNextPageParam: (lastPage) => {
         if (lastPage.next_page_url) {
           const url = new URL(lastPage.next_page_url);
-          //return Number(url.searchParams.get("page") ?? 1);
-          return Number(searchParams.page ?? 1);
+          return Number(url.searchParams.get("page"));
         }
         return undefined;
       },
@@ -54,38 +71,165 @@ const SearchPageClient = ({
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  const handleCategoryClick = (catId: string) => {
-    //const params = new URLSearchParams(searchParams.toString());
-    const params = new URLSearchParams();
+  const params: Record<string, string> = {};
 
-    params.set("category", catId);
-    params.set("q", searchParams.q || "");
+  const getFilterUrl = ({
+    c,
+    p,
+    s,
+    r,
+  }: {
+    c?: string;
+    p?: string;
+    s?: string;
+    r?: string;
+  }) => {
+    const query = new URLSearchParams(queryParams.toString());
 
-    router.push(`/search?${params.toString()}`);
+    if (q) query.set("q", q);
+    if (c) query.set("category", c);
+    if (p) query.set("price", p);
+    if (r) query.set("rating", r);
+    if (s) query.set("sortby", s);
+
+    router.push(`/search?${query.toString()}`);
   };
 
   if (isLoading) return <p>Loading products...</p>;
 
   return (
-    <div className="grid md:grid-cols-5 md:gap-5 bg-white">
-      <div className="text-[#212121]">
-        <h2 className="font-normal text-[14px] mt-5 mb-5">Category</h2>
-        <ul>
-          {categories?.map((cat: any) => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryClick(cat.id)}
+    <div className="grid md:grid-cols-5 md:gap-5 bg-white mt-7">
+      <div className="text-[#212121] ">
+        <div className="p-5">
+          <h2 className="font-normal text-[20px] mb-5">Category</h2>
+          <ul>
+            <Link
               className={`${
-                category === String(cat.id) ? "font-semibold text-blue-600" : ""
-              } mb-2 block text-left w-full cursor-pointer`}
+                (category === "all" || category === "") && "font-bold"
+              }`}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                getFilterUrl({ c: "all" });
+              }}
             >
-              {cat.name}
-            </button>
-          ))}
-        </ul>
+              Any
+            </Link>
+            {categories?.map((cat: any) => (
+              <li key={cat.id}>
+                <Link
+                  className={`${category == cat.id && "font-bold"}`}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    getFilterUrl({ c: cat.id });
+                  }}
+                >
+                  {cat.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="p-5 pt-0">
+          <h2 className="font-normal text-[20px] mb-5">Price</h2>
+          <div>
+            <ul className="space-y-1">
+              <li>
+                <Link
+                  className={`${price === "all" && "font-bold"}`}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    getFilterUrl({ p: "all" });
+                  }}
+                >
+                  Any
+                </Link>
+              </li>
+              {PRICES.map((p) => (
+                <li key={p.value}>
+                  <Link
+                    className={`${price === p.value && "font-bold"}`}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      getFilterUrl({ p: p.value });
+                    }}
+                  >
+                    {p.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="p-5 pt-0">
+          <h2 className="font-normal text-[20px] mb-5">Ratings</h2>
+          <div>
+            <ul className="space-y-1">
+              <li>
+                <Link
+                  className={`${rating === "all" && "font-bold"}`}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    getFilterUrl({ r: "all" });
+                  }}
+                >
+                  Any
+                </Link>
+              </li>
+              {RATINGS.map((r) => (
+                <li key={r}>
+                  <Link
+                    className={`${rating === r.toString() && "font-bold"}`}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      getFilterUrl({ r: r.toString() });
+                    }}
+                  >
+                    {`${r} stars & up`}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
 
-      <div className="md:col-span-4">
+      <div className="md:col-span-4 mt-5">
+        <div className="flex flex-row justify-between pr-5 items-center mb-5">
+          <div className="text-lg font-semibold">
+            {selectedCategory ? selectedCategory.name : "All Products"}
+          </div>
+
+          <div className="flex flex-row items-center space-x-2">
+            <div>Sort by:</div>
+            <Select
+              name="sortby"
+              defaultValue={"latest"}
+              onValueChange={(value) => {
+                getFilterUrl({ s: value });
+              }}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="latest">Product Latest</SelectItem>
+                <SelectItem value="price-high">Price High</SelectItem>
+                <SelectItem value="price-low">Price Low</SelectItem>
+                <SelectItem value="rating-high">Rating Hight</SelectItem>
+                <SelectItem value="rating-low">Rating Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
           {data?.pages.map((page) =>
             page.data.map((product: Product) => (
