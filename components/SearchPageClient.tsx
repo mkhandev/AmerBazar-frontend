@@ -1,6 +1,7 @@
 "use client";
 
 import ProductCard from "@/components/Product/ProductCard";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -203,15 +204,48 @@ const SearchPageClient = ({
 
       <div className="md:col-span-4 mt-5">
         <div className="flex flex-row justify-between pr-5 items-center mb-5">
-          <div className="text-lg font-semibold">
-            {selectedCategory ? selectedCategory.name : "All Products"}
+          <div className="px-5 pl-0 mb-0 text-sm text-gray-700">
+            {q && q !== "all" && (
+              <span className="mr-2">
+                <em className="font-[600] not-italic">Query:</em> {q}
+              </span>
+            )}
+
+            {selectedCategory && category !== "all" && (
+              <span className="mr-2">
+                <em className="font-[600] not-italic">Category:</em>
+                {selectedCategory.name}
+              </span>
+            )}
+
+            {price && price !== "all" && (
+              <span className="mr-2">
+                <em className="font-[600] not-italic">Price:</em> {price}
+              </span>
+            )}
+
+            {rating && rating !== "all" && (
+              <span className="mr-2">
+                <em className="font-[600] not-italic">Rating:</em>
+                {rating} stars & up
+              </span>
+            )}
+
+            {(!!(q && q !== "all") ||
+              !!(category && category !== "all") ||
+              !!(price && price !== "all") ||
+              !!(rating && rating !== "all")) && (
+              <Button variant="link" asChild className="p-0">
+                <Link href="/search">Clear</Link>
+              </Button>
+            )}
           </div>
 
           <div className="flex flex-row items-center space-x-2">
             <div>Sort by:</div>
             <Select
               name="sortby"
-              defaultValue={"latest"}
+              value={sortby || "latest"}
               onValueChange={(value) => {
                 getFilterUrl({ s: value });
               }}
