@@ -32,7 +32,7 @@ export default function Categories() {
         {data?.map((cat: any) => (
           <Link
             key={cat.id}
-            href="/"
+            href={`/search?category=${cat.id}`}
             className="block p-3 hover:shadow-lg box-border border-r border-b"
           >
             <div>
