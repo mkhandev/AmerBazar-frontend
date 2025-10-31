@@ -106,7 +106,8 @@ const SearchPageClient = ({
           <ul>
             <Link
               className={`${
-                (category === "all" || category === "") && "font-bold"
+                (category === "all" || category === "") &&
+                "font-[500] text-[#37a001]"
               }`}
               href="#"
               onClick={(e) => {
@@ -119,7 +120,9 @@ const SearchPageClient = ({
             {categories?.map((cat: any) => (
               <li key={cat.id}>
                 <Link
-                  className={`${category == cat.id && "font-bold"}`}
+                  className={`${
+                    category == cat.id && "font-[500] text-[#37a001]"
+                  }`}
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -139,7 +142,9 @@ const SearchPageClient = ({
             <ul className="space-y-1">
               <li>
                 <Link
-                  className={`${price === "all" && "font-bold"}`}
+                  className={`${
+                    price === "all" && "font-[500] text-[#37a001]"
+                  }`}
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -152,7 +157,9 @@ const SearchPageClient = ({
               {PRICES.map((p) => (
                 <li key={p.value}>
                   <Link
-                    className={`${price === p.value && "font-bold"}`}
+                    className={`${
+                      price === p.value && "font-[500] text-[#37a001]"
+                    }`}
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
@@ -173,7 +180,9 @@ const SearchPageClient = ({
             <ul className="space-y-1">
               <li>
                 <Link
-                  className={`${rating === "all" && "font-bold"}`}
+                  className={`${
+                    rating === "all" && "font-[500] text-[#37a001]"
+                  }`}
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -186,7 +195,9 @@ const SearchPageClient = ({
               {RATINGS.map((r) => (
                 <li key={r}>
                   <Link
-                    className={`${rating === r.toString() && "font-bold"}`}
+                    className={`${
+                      rating === r.toString() && "font-[500] text-[#37a001]"
+                    }`}
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
@@ -207,26 +218,26 @@ const SearchPageClient = ({
           <div className="px-5 pl-0 mb-0 text-sm text-gray-700">
             {q && q !== "all" && (
               <span className="mr-2">
-                <em className="font-[600] not-italic">Query:</em> {q}
+                <em className="font-[600] not-italic">Query: </em> {q}
               </span>
             )}
 
             {selectedCategory && category !== "all" && (
               <span className="mr-2">
-                <em className="font-[600] not-italic">Category:</em>
+                <em className="font-[600] not-italic">Category: </em>
                 {selectedCategory.name}
               </span>
             )}
 
             {price && price !== "all" && (
               <span className="mr-2">
-                <em className="font-[600] not-italic">Price:</em> {price}
+                <em className="font-[600] not-italic">Price: </em> {price}
               </span>
             )}
 
             {rating && rating !== "all" && (
               <span className="mr-2">
-                <em className="font-[600] not-italic">Rating:</em>
+                <em className="font-[600] not-italic">Rating: </em>
                 {rating} stars & up
               </span>
             )}
@@ -257,7 +268,7 @@ const SearchPageClient = ({
                 <SelectItem value="latest">Product Latest</SelectItem>
                 <SelectItem value="price-high">Price High</SelectItem>
                 <SelectItem value="price-low">Price Low</SelectItem>
-                <SelectItem value="rating-high">Rating Hight</SelectItem>
+                <SelectItem value="rating-high">Rating High</SelectItem>
                 <SelectItem value="rating-low">Rating Low</SelectItem>
               </SelectContent>
             </Select>
