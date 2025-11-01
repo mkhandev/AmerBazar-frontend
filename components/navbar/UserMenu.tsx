@@ -29,11 +29,11 @@ const UserMenu = () => {
       <div className="block md:hidden">
         <Sheet>
           <SheetTrigger asChild>
-            <EllipsisVertical />
+            <EllipsisVertical className="text-[#FFFFFF]" />
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>Edit profile</SheetTitle>
+              <SheetTitle>Profile</SheetTitle>
             </SheetHeader>
           </SheetContent>
         </Sheet>

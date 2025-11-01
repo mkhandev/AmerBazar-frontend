@@ -7,9 +7,9 @@ import { Suspense } from "react";
 
 const Navbar = () => {
   return (
-    <nav className="w-full border-b-3 border-[#37a001] py-4 bg-[#37a001]">
+    <nav className="w-full border-b-3 border-[#37a001] py-3 bg-[#37a001]">
       <div className="container w-full mx-auto flex flex-row justify-between items-center px-2 sm:px-0 gap-1">
-        <div className="hidden md:flex flex-row gap-4 items-center">
+        <div className="hidden lg:flex flex-row gap-5 items-center">
           <Logo />
           <UserNavigation />
         </div>

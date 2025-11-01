@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const ProductCard = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(true);
   return (
-    <div className="bg-white">
+    <div className="bg-white hover:shadow-lg">
       <div className="relative w-full">
         {isLoading && <Skeleton className="inset-0 w-full h-20 rounded-lg" />}
 
