@@ -7,7 +7,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Search = () => {
-  //const [search, setSearch] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -41,18 +40,21 @@ const Search = () => {
 
   return (
     <form onSubmit={handleSearch}>
-      <div className="flex flex-row items-center gap-1">
+      <div className="flex flex-row items-center gap-0">
         <Input
           name="q"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           type="text"
           placeholder="Search..."
-          className="w-full md:w-[100px] lg:w-[500px] bg-white"
+          className="w-full md:w-[300px] lg:w-[500px] text-[#000000] bg-white min-h-[45px] dark:bg-white d rounded-none placeholder:text-[#000000] placeholder:text-[15px] focus:outline-0 focus:border-0 focus-visible:outline-none focus-visible:ring-0"
         />
 
-        <Button type="submit">
-          <SearchIcon />
+        <Button
+          type="submit"
+          className="min-h-[46px] rounded-none border-0 outline-0"
+        >
+          <SearchIcon className=" min-h-[45px]" />
         </Button>
       </div>
     </form>

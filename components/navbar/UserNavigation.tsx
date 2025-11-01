@@ -7,20 +7,16 @@ const UserNavigation = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-2 text-white text-[20px]">
       <Link
         href="/"
-        className={`${
-          pathname === "/" ? "bg-orange-400 text-white" : ""
-        } text-[#000] hover:bg-orange-400 hover:text-white rounded-md px-3 py-2`}
+        className={`${pathname === "/" ? "text-white" : ""}  px-2`}
       >
         Home
       </Link>
       <Link
-        href="/product"
-        className={`${
-          pathname === "/" ? "bg-orange-400 text-white" : ""
-        } text-[#000] hover:bg-orange-400 hover:text-white rounded-md px-3 py-2`}
+        href="/search"
+        className={`${pathname === "/" ? "text-white" : ""}  px-2`}
       >
         Products
       </Link>
