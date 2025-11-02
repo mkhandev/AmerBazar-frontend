@@ -18,7 +18,7 @@ export interface Category {
   updated_at: string;
 }
 
-export interface Image {
+export interface ProductImage {
   id: number;
   product_id: number;
   image: string;
@@ -56,7 +56,7 @@ export interface Product {
   updated_at: string;
   category: Category;
   user: User;
-  images: Image[];
+  images: ProductImage[];
   reviews: Review[];
 }
 
