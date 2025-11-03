@@ -27,7 +27,7 @@ export interface ProductImage {
   updated_at: string;
 }
 
-export interface Review {
+export interface ProductReview {
   id: number;
   product_id: number;
   user_id: number;
@@ -37,6 +37,7 @@ export interface Review {
   is_approved: number;
   created_at: string;
   updated_at: string;
+  user: User;
 }
 
 export interface Product {
@@ -57,7 +58,7 @@ export interface Product {
   category: Category;
   user: User;
   images: ProductImage[];
-  reviews: Review[];
+  reviews: ProductReview[];
 }
 
 export type ProductApiResponse = {
