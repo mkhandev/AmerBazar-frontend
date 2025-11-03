@@ -1,16 +1,17 @@
 import { apiUrl } from "@/lib/constants";
-import { ProductApiResponse } from "@/types/products";
+import { Product, ProductApiResponse } from "@/types/products";
 
 export async function fetchCategories() {
   const res = await fetch(`${apiUrl}/categories`);
   if (!res.ok) throw new Error("Failed to fetch categories");
   return res.json();
 }
-export async function fetchProductsOld(
-  page: number = 1
-): Promise<ProductApiResponse> {
-  const res = await fetch(`${apiUrl}/products?page=${page}`);
-  if (!res.ok) throw new Error("Failed to fetch products");
+
+export async function fetchProduct(
+  slug: string
+): Promise<{ success: boolean; message: string; data: Product }> {
+  const res = await fetch(`${apiUrl}/products/${slug}`);
+  if (!res.ok) throw new Error("Failed to fetch categories");
   return res.json();
 }
 
