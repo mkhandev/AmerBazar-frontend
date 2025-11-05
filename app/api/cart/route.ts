@@ -70,10 +70,12 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
 
-    console.log(body);
-
     const session_cart_id = (await cookies()).get("session_cart_id")?.value;
     if (!session_cart_id) throw new Error("Cart session not found");
+
+    console.log("=========Calling from hooks API Patch===============");
+
+    console.log(body);
 
     const session = await auth();
     const user_id = session?.user?.id ? (session.user.id as string) : undefined;

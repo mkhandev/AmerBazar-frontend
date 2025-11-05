@@ -51,6 +51,8 @@ export function useCart() {
       product_id: number;
       quantity: number;
     }) => {
+      console.log("-----calling from hooks----------");
+
       const res = await fetch("/api/cart", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
