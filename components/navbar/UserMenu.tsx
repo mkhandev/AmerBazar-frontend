@@ -18,7 +18,7 @@ const UserMenu = () => {
       <div className="hidden md:flex flex-row gap-1 items-center">
         <ModeToggle />
         <Button asChild variant="ghost">
-          <Link href="/">
+          <Link href="/cart">
             <ShoppingCart /> Cart
           </Link>
         </Button>
