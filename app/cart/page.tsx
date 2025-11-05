@@ -14,7 +14,7 @@ const CartPage = () => {
     if (currentQty >= 5) return; // max limit
     setUpdatingItemId(product_id);
     updateMutation.mutate(
-      { product_id, quantity: currentQty + 1 },
+      { product_id, quantity: Number(currentQty) + 1 },
       {
         onSettled: () => setUpdatingItemId(null), // clear loader
       }
@@ -25,7 +25,7 @@ const CartPage = () => {
     if (currentQty <= 1) return; // min limit
     setUpdatingItemId(product_id);
     updateMutation.mutate(
-      { product_id, quantity: currentQty - 1 },
+      { product_id, quantity: Number(currentQty) - 1 },
       {
         onSettled: () => setUpdatingItemId(null),
       }

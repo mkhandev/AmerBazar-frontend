@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       user_id ? `/${user_id}` : ""
     }`;
 
-    console.log(urlFetch);
+    //console.log(urlFetch);
 
     const res = await fetch(urlFetch, {
       method: "GET",
@@ -73,9 +73,7 @@ export async function PATCH(request: Request) {
     const session_cart_id = (await cookies()).get("session_cart_id")?.value;
     if (!session_cart_id) throw new Error("Cart session not found");
 
-    console.log("=========Calling from hooks API Patch===============");
-
-    console.log(body);
+    //console.log(body);
 
     const session = await auth();
     const user_id = session?.user?.id ? (session.user.id as string) : undefined;
