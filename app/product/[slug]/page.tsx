@@ -11,6 +11,7 @@ import { Coins, Siren, Truck } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import { apiUrl } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
+import AddToCart from "@/components/Product/AddToCart";
 
 const ProductPage = () => {
   const params = useParams();
@@ -23,6 +24,8 @@ const ProductPage = () => {
     queryFn: () => fetchProduct(slug),
     enabled: !!slug,
   });
+
+  if (!product) return null;
 
   const productUrl = `${apiUrl}/product/${slug}`;
 
@@ -68,12 +71,12 @@ const ProductPage = () => {
             </div>
 
             <div className="mt-5 mb-5">
-              <button
-                type="submit"
-                className="bg-[#37a001] w-full max-w-[210px] rounded-none text-[15px] text-[#FFFFFF] py-3 border-0 outline-0"
-              >
-                Add to card
-              </button>
+              <AddToCart
+                item={{
+                  product_id: product?.data.id,
+                  price: Number(product?.data.price),
+                }}
+              />
             </div>
           </div>
           <div className="bg-[#FAFAFA] px-5 text-[#212121] text-[14px]">
