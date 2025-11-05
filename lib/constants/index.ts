@@ -5,7 +5,9 @@ export const apiServerUrl =
   process.env.SERVER_API_URL || "https://api.amerbazar.mkhandev.info/api/v1";
 
 export const apiUrl =
-  process.env.ENVIRONMENT_MODE === "production" ? apiServerUrl : apiLocalUrl;
+  process.env.NEXT_PUBLIC_ENVIRONMENT_MODE === "production"
+    ? apiServerUrl
+    : apiLocalUrl;
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "AmerBazar";
 
