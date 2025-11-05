@@ -67,11 +67,11 @@ export function useCart() {
   });
 
   const removeMutation = useMutation({
-    mutationFn: async (product_id: number) => {
+    mutationFn: async (cart_id: number) => {
       const res = await fetch("/api/cart", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product_id }),
+        body: JSON.stringify({ cart_id }),
       });
 
       const data = await res.json();

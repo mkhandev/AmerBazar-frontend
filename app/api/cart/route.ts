@@ -11,13 +11,15 @@ export async function GET(request: NextRequest) {
     if (!session_cart_id) throw new Error("Cart  session not found");
 
     const session = await auth();
-    const user_id = session?.user?.id ? (session.user.id as string) : undefined;
+    const user_id = undefined;
 
-    const params = new URLSearchParams();
-    params.append("session_cart_id", session_cart_id);
-    if (user_id) params.append("user_id", user_id);
+    const urlFetch = `${apiUrl}/cart/${session_cart_id}${
+      user_id ? `/${user_id}` : ""
+    }`;
 
-    const res = await fetch(`${apiUrl}/cart?${params.toString()}`, {
+    console.log(urlFetch);
+
+    const res = await fetch(urlFetch, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -66,7 +68,9 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const body = await request.json(); // { product_id, quantity }
+    const body = await request.json();
+
+    console.log(body);
 
     const session_cart_id = (await cookies()).get("session_cart_id")?.value;
     if (!session_cart_id) throw new Error("Cart session not found");
@@ -102,13 +106,19 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const body = await request.json(); // { product_id }
+    const session_cart_id = (await cookies()).get("session_cart_id")?.value;
+    if (!session_cart_id) throw new Error("Cart  session not found");
 
-    const res = await fetch(`${apiUrl}/cart/remove/${body.product_id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-    });
+    const body = await request.json();
+
+    const res = await fetch(
+      `${apiUrl}/cart/${body.cart_id}/${session_cart_id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
