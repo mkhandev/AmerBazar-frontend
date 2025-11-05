@@ -14,11 +14,13 @@ import { Loader, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const AddToCart = ({ item }: { item: CartItem }) => {
+const AddToCart = ({
+  item,
+}: {
+  item: { product_id: number; price: number };
+}) => {
   //const { addMutation } = useCart();
   const { cart, isLoading, addMutation, updateMutation } = useCart();
-
-  //console.log(cart);
 
   const existingItem = cart?.data.find(
     (ci: any) => ci.product_id === item.product_id
@@ -61,7 +63,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
         <button
           type="button"
           className="px-3 py-1 border rounded"
-          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+          onClick={() => setQuantity((q: number) => Math.max(1, q - 1))}
         >
           -
         </button>
@@ -80,7 +82,7 @@ const AddToCart = ({ item }: { item: CartItem }) => {
         <button
           type="button"
           className="px-3 py-1 border rounded"
-          onClick={() => setQuantity((q) => Math.min(5, q + 1))} // max 5
+          onClick={() => setQuantity((q: number) => Math.min(5, q + 1))} // max 5
         >
           +
         </button>
