@@ -30,7 +30,10 @@ export function useCart() {
       const res = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product_id, quantity }),
+        body: JSON.stringify({
+          product_id: Number(product_id),
+          quantity: Number(quantity),
+        }),
       });
 
       const data = await res.json();
@@ -51,12 +54,13 @@ export function useCart() {
       product_id: number;
       quantity: number;
     }) => {
-      console.log("-----calling from hooks----------");
-
       const res = await fetch("/api/cart", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product_id, quantity }),
+        body: JSON.stringify({
+          product_id: Number(product_id),
+          quantity: Number(quantity),
+        }),
       });
 
       const data = await res.json();
