@@ -5,6 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "next-themes";
 import { ReactQueryProviders } from "@/components/ReactQueryProviders";
 import Footer from "@/components/Footer/Index";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "AmerBazar",
@@ -28,6 +29,7 @@ export default function RootLayout({
           >
             <Navbar />
             <main className="container mx-auto">{children}</main>
+            <Toaster />
             <Footer />
           </ThemeProvider>
         </ReactQueryProviders>

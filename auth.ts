@@ -10,7 +10,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("✅ authorize() called with:", credentials);
+        //console.log("✅ authorize() called with:", credentials);
 
         try {
           const res = await fetch(`${apiUrl}/login`, {
@@ -44,11 +44,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.accessToken = user.token as string;
+      if (user) {
+        token.accessToken = user.token as string;
+        token.id = user.id;
+      }
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
+      session.user.id = (token.sub ?? token.id) as string;
+
       return session;
     },
   },
