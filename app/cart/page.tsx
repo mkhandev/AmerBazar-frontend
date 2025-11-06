@@ -79,11 +79,6 @@ const CartPage = () => {
         <div className="grid grid-col-1 lg:grid-cols-4 xl:grid-cols-5 md:gap-5 mt-5 min-h-[70vh]">
           <div className="lg:col-span-3 xl:col-span-4">
             {cart.data.map((item: any) => {
-              const isUpdatingThisItem =
-                updatingItemId === item.product_id &&
-                ((updateMutation as any).state?.status === "loading" ||
-                  (removeMutation as any).state?.status === "loading");
-
               return (
                 <div
                   className="flex flex-col md:flex-row justify-between p-3 bg-white shadow-sm gap-3 mb-3 last:mb-0"
