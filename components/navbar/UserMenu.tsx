@@ -16,12 +16,20 @@ const UserMenu = () => {
   return (
     <>
       <div className="hidden md:flex flex-row gap-1 items-center">
-        <ModeToggle />
-        <Button asChild variant="ghost">
-          <Link href="/cart">
-            <ShoppingCart /> Cart
+        <Button
+          asChild
+          variant="ghost"
+          className="bg-transparent hover:bg-transparent"
+        >
+          <Link href="/cart" className="text-white hover:text-white">
+            <ShoppingCart className="text-white " />
+            Cart
           </Link>
         </Button>
+
+        <div className="cursor-pointer">
+          <ModeToggle />
+        </div>
 
         <Menu />
       </div>
