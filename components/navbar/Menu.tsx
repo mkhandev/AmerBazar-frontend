@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,10 +9,23 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserIcon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-const Menu = () => {
+const Menu = async () => {
+  const session = await auth();
+
+  if (!session) {
+    return (
+      <Button asChild>
+        <Link href="/signin">
+          <UserIcon /> Sign In
+        </Link>
+      </Button>
+    );
+  }
+
   return (
     <div>
       <DropdownMenu>

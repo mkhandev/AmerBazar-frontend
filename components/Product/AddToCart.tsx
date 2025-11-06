@@ -11,6 +11,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useCart } from "@/hooks/useCart";
 import { CartItem } from "@/types/cart";
 import { Loader, Plus } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -119,13 +120,8 @@ const AddToCart = ({
               Continue Shopping
             </Button>
 
-            <Button
-              onClick={() => {
-                setOpen(false);
-                window.location.href = "/cart";
-              }}
-            >
-              Go to Cart
+            <Button asChild>
+              <Link href="/cart">Go to Cart</Link>
             </Button>
           </DialogFooter>
         </DialogContent>
