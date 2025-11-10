@@ -13,6 +13,20 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "loremflickr.com",
       },
+      {
+        protocol: "https",
+        hostname: "api.amerbazar.mkhandev.info",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "8000", // match your local dev port
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000", // optional if using localhost instead of 127.0.0.1
+      },
     ],
   },
 };

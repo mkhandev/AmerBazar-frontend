@@ -12,6 +12,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import { apiUrl } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import AddToCart from "@/components/Product/AddToCart";
+import Image from "next/image";
 
 const ProductPage = () => {
   const params = useParams();
@@ -29,12 +30,27 @@ const ProductPage = () => {
 
   const productUrl = `${apiUrl}/product/${slug}`;
 
+  const productImage = product?.data?.images;
+  const imageUrl = "/images/placeholder1.jpg";
+
   return (
     <>
       <section className="bg-white mt-7 p-5 pr-0 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
           <div className="col-span-2 pb-5">
-            <ProductImages images={product?.data?.images || []} />
+            {productImage.length === 0 ? (
+              <div>
+                <Image
+                  src={imageUrl}
+                  alt="product-image"
+                  width={1000}
+                  height={1000}
+                  className="min-h-[300px] max-h-[450px] object-cover object-center"
+                />
+              </div>
+            ) : (
+              <ProductImages images={product?.data?.images || []} />
+            )}
           </div>
           <div className="col-span-2 pb-5">
             <div className="flex flex-col gap-1">

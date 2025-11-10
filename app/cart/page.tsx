@@ -4,38 +4,43 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import ProductPrice from "@/components/Product/ProductPrice";
 import Rating from "@/components/Product/Rating";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
+import { shippingAmount } from "@/lib/constants";
 
 const CartPage = () => {
   const { cart, isLoading, updateMutation, removeMutation } = useCart();
   const [updatingItemId, setUpdatingItemId] = useState<number | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
-  const handleIncrement = (product_id: number, currentQty: number) => {
-    if (currentQty >= 5) return; // max limit
-    setUpdatingItemId(product_id);
+  const handleIncrement = (item_id: number, currentQty: number) => {
+    if (currentQty >= 5) return;
+    setUpdatingItemId(item_id);
     updateMutation.mutate(
-      { product_id, quantity: Number(currentQty) + 1 },
-      {
-        onSettled: () => setUpdatingItemId(null), // clear loader
-      }
-    );
-  };
-
-  const handleDecrement = (product_id: number, currentQty: number) => {
-    if (currentQty <= 1) return; // min limit
-    setUpdatingItemId(product_id);
-    updateMutation.mutate(
-      { product_id, quantity: Number(currentQty) - 1 },
+      { item_id, quantity: Number(currentQty) + 1 },
       {
         onSettled: () => setUpdatingItemId(null),
       }
     );
   };
 
-  const handleRemove = (cart_id: number) => {
-    setUpdatingItemId(cart_id);
-    removeMutation.mutate(cart_id, {
+  const handleDecrement = (item_id: number, currentQty: number) => {
+    if (currentQty <= 1) return;
+    setUpdatingItemId(item_id);
+    updateMutation.mutate(
+      { item_id, quantity: Number(currentQty) - 1 },
+      {
+        onSettled: () => setUpdatingItemId(null),
+      }
+    );
+  };
+
+  const handleRemove = (item_id: number) => {
+    setUpdatingItemId(item_id);
+    removeMutation.mutate(item_id, {
       onSettled: () => setUpdatingItemId(null),
     });
   };
@@ -56,12 +61,20 @@ const CartPage = () => {
   }
 
   // --- Cart Summary Calculations ---
-  const subtotal = cart.data.reduce(
-    (acc: number, item: any) => acc + Number(item.item_price) * item.quantity,
+  const shippingTotal = shippingAmount || 50;
+  const taxTotal = 0;
+
+  const subtotal = cart.data?.items?.reduce(
+    (acc: number, item: any) =>
+      acc + Number(item.product.price) * item.quantity,
     0
   );
-  const shippingTotal = 50.0;
-  const taxTotal = 0;
+
+  const totalItems = cart?.data?.items.reduce(
+    (acc: number, item: any) => acc + item.quantity,
+    0
+  );
+
   const grandTotal = subtotal + shippingTotal + taxTotal;
 
   return (
@@ -78,7 +91,12 @@ const CartPage = () => {
       ) : (
         <div className="grid grid-col-1 lg:grid-cols-4 xl:grid-cols-5 md:gap-5 mt-5 min-h-[70vh]">
           <div className="lg:col-span-3 xl:col-span-4">
-            {cart.data.map((item: any) => {
+            {cart.data.items.map((item: any) => {
+              const imageUrl =
+                item.product.images.length > 0
+                  ? item.product.images[0].image
+                  : "/images/placeholder2.jpg";
+
               return (
                 <div
                   className="flex flex-col md:flex-row justify-between p-3 bg-white shadow-sm gap-3 mb-3 last:mb-0"
@@ -87,9 +105,9 @@ const CartPage = () => {
                   {/* Product Image */}
                   <div className="flex-none w-full md:max-w-[150px] lg:max-w-[200px]">
                     <img
-                      src={item.product.images[0].image}
+                      src={imageUrl}
                       alt={item.product.name}
-                      className="object-center object-cover md:w-[200] md:h-auto"
+                      className="object-center object-cover md:w-[200] md:h-auto md:max-h[133px]"
                     />
                   </div>
 
@@ -131,11 +149,11 @@ const CartPage = () => {
                       <div className="flex items-center gap-3 border rounded-full px-3 py-1">
                         <button
                           onClick={() =>
-                            handleDecrement(item.product_id, item.quantity)
+                            handleDecrement(item.id, item.quantity)
                           }
                           disabled={
-                            updateMutation.isPending ||
-                            updatingItemId === item.product_id ||
+                            (updateMutation.isPending &&
+                              updatingItemId === item.id) ||
                             item.quantity <= 1
                           }
                           className={`text-xl font-bold px-2 ${
@@ -147,21 +165,22 @@ const CartPage = () => {
                           -
                         </button>
 
-                        {updatingItemId === item.product_id ? (
+                        {updateMutation.isPending &&
+                        updatingItemId === item.id ? (
                           <div className="h-5 w-5 border-2 border-[#37a001] border-t-transparent rounded-full animate-spin"></div>
                         ) : (
-                          <span className="w-6 text-center">
+                          <span className="w-5 text-center">
                             {item.quantity}
                           </span>
                         )}
 
                         <button
                           onClick={() =>
-                            handleIncrement(item.product_id, item.quantity)
+                            handleIncrement(item.id, item.quantity)
                           }
                           disabled={
-                            updateMutation.isPending ||
-                            updatingItemId === item.product_id ||
+                            (updateMutation.isPending &&
+                              updatingItemId === item.id) ||
                             item.quantity >= 5
                           }
                           className={`text-xl font-bold px-2 ${
@@ -179,14 +198,17 @@ const CartPage = () => {
                     <div className="flex-1 flex justify-center items-center">
                       <button
                         onClick={() => handleRemove(item.id)} // use cart id
-                        disabled={updatingItemId === item.id}
+                        disabled={
+                          removeMutation.isPending && updatingItemId === item.id
+                        }
                         className={`bg-red-100 text-red-600 text-[15px] px-2 py-1 rounded ${
-                          updatingItemId === item.id
+                          removeMutation.isPending && updatingItemId === item.id
                             ? "opacity-50 cursor-not-allowed bg-transparent"
                             : "cursor-pointer"
                         }`}
                       >
-                        {updatingItemId === item.id ? (
+                        {removeMutation.isPending &&
+                        updatingItemId === item.id ? (
                           <div className="h-5 w-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
                         ) : (
                           "Remove"
@@ -205,7 +227,9 @@ const CartPage = () => {
               Order Summary
             </h2>
             <div className="flex justify-between mb-2 text-[#757575]">
-              <span className="text-[#212121]">Subtotal</span>
+              <span className="text-[#212121]">
+                Items Total ({totalItems} items)
+              </span>
               <span className="text-[16px] text-[#202020]">
                 ${subtotal.toFixed(2)}
               </span>
@@ -229,8 +253,15 @@ const CartPage = () => {
               </span>
             </div>
 
-            <button className="mt-5 w-full bg-[#37a001] text-white py-3 hover:bg-green-700 transition rounded-1xl cursor-pointer">
-              Proceed to Checkout
+            <button
+              onClick={() =>
+                startTransition(() => router.push("/shipping-address"))
+              }
+              disabled={isPending}
+              className="mt-5 w-full bg-[#37a001] text-white py-3 hover:bg-green-700 transition rounded-1xl cursor-pointer flex items-center justify-center"
+            >
+              {isPending && <Spinner className="w-4 h-4 animate-spin" />}
+              &nbsp; Proceed to Checkout
             </button>
           </div>
         </div>

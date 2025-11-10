@@ -20,10 +20,9 @@ const AddToCart = ({
 }: {
   item: { product_id: number; price: number };
 }) => {
-  //const { addMutation } = useCart();
   const { cart, isLoading, addMutation, updateMutation } = useCart();
 
-  const existingItem = cart?.data.find(
+  const existingItem = cart?.data?.items.find(
     (ci: any) => ci.product_id === item.product_id
   );
 
@@ -37,7 +36,7 @@ const AddToCart = ({
   const handleAddToCart = () => {
     if (existingItem) {
       updateMutation.mutate(
-        { product_id: item.product_id, quantity },
+        { item_id: existingItem.id, quantity },
         {
           onSuccess: () => setOpen(true),
           onError: (error: any) =>
@@ -56,6 +55,8 @@ const AddToCart = ({
       );
     }
   };
+
+  console.log(cart);
 
   return (
     <>
@@ -93,7 +94,7 @@ const AddToCart = ({
         type="button"
         disabled={isPending}
         onClick={handleAddToCart}
-        className={`flex justify-center items-center rounded w-full max-w-[210px] py-3 text-[15px] text-white bg-[#37a001] border-0 outline-0  
+        className={`flex justify-center items-center rounded w-full max-w-[210px] py-3 text-[15px] text-white bg-[#37a001] border-0 outline-0 cursor-pointer  
           ${isPending ? "opacity-70 cursor-not-allowed" : "hover:bg-green-700"}
         `}
       >

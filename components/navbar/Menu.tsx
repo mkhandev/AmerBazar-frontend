@@ -1,4 +1,7 @@
-import { auth } from "@/auth";
+"use client";
+
+// import { auth } from "@/auth";
+import LogoutButton from "@/components/navbar/LogoutButton";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
-const Menu = async () => {
-  const session = await auth();
+const Menu = () => {
+  // const session = await auth();
+  const { data: session, status } = useSession();
 
   if (!session) {
     return (
@@ -35,21 +40,20 @@ const Menu = async () => {
 
         <DropdownMenuContent className="w-56" align="start">
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/" className="w-full">
                 Profile
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link href="/" className="w-full">
                 Order
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Log out
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            <DropdownMenuItem asChild>
+              <LogoutButton />
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>

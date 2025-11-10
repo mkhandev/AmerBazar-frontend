@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { apiUrl } from "@/lib/constants";
+import { cookies } from "next/headers";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -10,8 +11,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        //console.log("✅ authorize() called with:", credentials);
-
         try {
           const res = await fetch(`${apiUrl}/login`, {
             method: "POST",
@@ -43,11 +42,48 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.accessToken = user.token as string;
         token.id = user.id;
+
+        if (trigger === "signIn") {
+          const session_cart_id = (await cookies()).get(
+            "session_cart_id"
+          )?.value;
+
+          if (session_cart_id) {
+            try {
+              const cartRes = await fetch(`${apiUrl}/cart/${session_cart_id}`, {
+                method: "GET",
+                headers: {
+                  Authorization: `Bearer ${user.token}`,
+                  Accept: "application/json",
+                },
+              });
+
+              const cartData = await cartRes.json();
+              if (cartRes.ok && cartData?.data?.length) {
+                await fetch(`${apiUrl}/cart/update-user`, {
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                  },
+                  body: JSON.stringify({
+                    session_cart_id,
+                    user_id: user.id,
+                  }),
+                });
+              }
+            } catch (error) {
+              console.log("Cart sync failed:", error);
+            }
+          }
+        }
       }
+
       return token;
     },
     async session({ session, token }) {

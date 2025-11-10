@@ -19,4 +19,28 @@ export async function middleware(request: NextRequest) {
 
     return response;
   }
+
+  const protectedPaths = [
+    /^\/shipping-address/,
+    /^\/payment-method/,
+    /^\/place-order/,
+    /^\/profile/,
+    /^\/user\/(.*)/,
+    /^\/order\/(.*)/,
+    /^\/admin/,
+  ];
+
+  const isProtected = protectedPaths.some((regex) => regex.test(pathname));
+
+  if (isProtected) {
+    const sessionToken =
+      request.cookies.get("authjs.session-token")?.value ||
+      request.cookies.get("__Secure-authjs.session-token")?.value;
+
+    if (!sessionToken) {
+      return NextResponse.redirect(new URL("/signin", request.url));
+    }
+  }
+
+  return NextResponse.next();
 }
