@@ -3,3 +3,13 @@ export type CartItem = {
   price: number;
   quantity: number;
 };
+
+export type ShippingInfo = {
+  name: string;
+  phone?: string;
+  address: string;
+  city: string;
+  postal_code: string;
+  country: string;
+  payment_method: "CashOnDelivery" | "Stripe";
+};

@@ -9,13 +9,16 @@ import Link from "next/link";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(true);
+
+  const imageUrl = product.images?.[0]?.image || "/images/placeholder2.jpg";
+
   return (
-    <div className="bg-white hover:shadow-lg">
+    <div className="bg-white hover:shadow-lg border">
       <div className="relative w-full">
         {isLoading && <Skeleton className="inset-0 w-full h-20 rounded-lg" />}
         <Link href={`/product/${product.slug}`}>
           <Image
-            src={product.images[0]["image"]}
+            src={imageUrl}
             alt={product.name}
             width={600}
             height={400}

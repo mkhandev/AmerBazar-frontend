@@ -13,8 +13,8 @@ export default function Categories() {
 
   if (isLoading)
     return (
-      <div className="bg-white grid [grid-template-columns:repeat(auto-fit,minmax(175px,1fr))] gap-3">
-        {Array.from({ length: 16 }).map((_, i) => (
+      <div className="bg-white grid [grid-template-columns:repeat(auto-fit,minmax(130px,1fr))] gap-3">
+        {Array.from({ length: 20 }).map((_, i) => (
           <div key={i} className="p-3 border-r border-b">
             <Skeleton className="h-[130px] w-full mb-2" />
             <Skeleton className="h-4 w-3/4 mx-auto" />
@@ -28,7 +28,7 @@ export default function Categories() {
   return (
     <div>
       <h1 className="text-[22px] font-normal mb-3">Categories</h1>
-      <div className="bg-white grid [grid-template-columns:repeat(auto-fit,minmax(175px,1fr))] gap-3">
+      <div className="bg-white grid [grid-template-columns:repeat(auto-fit,minmax(130px,1fr))] gap-3">
         {data?.map((cat: any) => (
           <Link
             key={cat.id}

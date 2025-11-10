@@ -1,3 +1,6 @@
+import { shippingAddressSchema } from "@/lib/validators";
+import z from "zod";
+
 export const apiLocalUrl =
   process.env.LOCAL_API_URL || "http://127.0.0.1:8000/api/v1";
 
@@ -37,3 +40,29 @@ export const PRICES = [
 export const RATINGS = [4, 3, 2, 1];
 
 export const SORT_ORDERS = ["newest", "lowest", "highest", "rating"];
+
+export const signInDefaultValues = {
+  email: "admin@example.com",
+  password: "password",
+};
+
+export const signUpDefaultValues = {
+  name: "Sumon",
+  email: "mkhancse@gmail.com",
+  password: "123456",
+  confirmPassword: "123456",
+};
+
+export const shippingAddressDefaultValues: z.infer<
+  typeof shippingAddressSchema
+> = {
+  name: "Abdullah Al Mahmud",
+  phone: "01748152992",
+  address: "123 Main st",
+  city: "Dhaka",
+  postal_code: "1216",
+  country: "Bangladesh",
+  payment_method: "cod",
+};
+
+export const shippingAmount = 50.0;

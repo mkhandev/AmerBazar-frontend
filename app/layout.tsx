@@ -7,6 +7,7 @@ import { ReactQueryProviders } from "@/components/ReactQueryProviders";
 import Footer from "@/components/Footer/Index";
 import { Toaster } from "@/components/ui/sonner";
 import { Roboto } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -25,19 +26,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={roboto.className}>
       <body suppressHydrationWarning>
-        <ReactQueryProviders>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            <main className="container mx-auto">{children}</main>
-            <Toaster />
-            <Footer />
-          </ThemeProvider>
-        </ReactQueryProviders>
+        <SessionProvider>
+          <ReactQueryProviders>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Navbar />
+              <main className="container mx-auto">{children}</main>
+              <Toaster />
+              <Footer />
+            </ThemeProvider>
+          </ReactQueryProviders>
+        </SessionProvider>
       </body>
     </html>
   );

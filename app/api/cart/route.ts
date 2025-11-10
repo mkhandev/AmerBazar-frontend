@@ -10,14 +10,7 @@ export async function GET(request: NextRequest) {
     const session_cart_id = (await cookies()).get("session_cart_id")?.value;
     if (!session_cart_id) throw new Error("Cart  session not found");
 
-    const session = await auth();
-    const user_id = undefined;
-
-    const urlFetch = `${apiUrl}/cart/${session_cart_id}${
-      user_id ? `/${user_id}` : ""
-    }`;
-
-    //console.log(urlFetch);
+    const urlFetch = `${apiUrl}/cart/${session_cart_id}`;
 
     const res = await fetch(urlFetch, {
       method: "GET",
@@ -73,24 +66,24 @@ export async function PATCH(request: Request) {
     const session_cart_id = (await cookies()).get("session_cart_id")?.value;
     if (!session_cart_id) throw new Error("Cart session not found");
 
-    //console.log(body);
-
     const session = await auth();
     const user_id = session?.user?.id ? (session.user.id as string) : undefined;
 
     const payload = {
       ...body,
-      session_cart_id,
       ...(user_id && { user_id }),
     };
 
     console.log(payload);
 
-    const res = await fetch(`${apiUrl}/cart/update`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+    const res = await fetch(
+      `${apiUrl}/cart/${session_cart_id}/item/${body.item_id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }
+    );
 
     //console.log(res);
 
@@ -111,8 +104,11 @@ export async function DELETE(request: Request) {
 
     const body = await request.json();
 
+    console.log(body);
+    console.log(session_cart_id);
+
     const res = await fetch(
-      `${apiUrl}/cart/${body.cart_id}/${session_cart_id}`,
+      `${apiUrl}/cart/${session_cart_id}/item/${body.item_id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
