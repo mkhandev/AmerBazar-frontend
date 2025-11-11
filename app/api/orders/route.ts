@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       ...(user_id && { user_id }),
     };
 
-    const res = await fetch(`${apiUrl}/order`, {
+    const res = await fetch(`${apiUrl}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
