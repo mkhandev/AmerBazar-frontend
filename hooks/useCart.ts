@@ -1,10 +1,12 @@
 //hooks/useCart.ts
 "use client";
 
+import { useToken } from "@/hooks/useToken";
 import { ShippingInfo } from "@/types/cart";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useCart() {
+  const { getValidToken } = useToken();
   const queryClient = useQueryClient();
 
   const { data: cart, isLoading } = useQuery({
@@ -129,7 +131,10 @@ export function useCart() {
 
   const placeOrderMutation = useMutation({
     mutationFn: async ({ cart_id }: { cart_id: number }) => {
-      const res = await fetch("/api/order", {
+      const token = getValidToken();
+      if (!token) return;
+
+      const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

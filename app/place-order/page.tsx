@@ -72,7 +72,7 @@ const PlaceOrderPage = () => {
             <p>{userInfo.name}</p>
             <p>
               {userInfo.address}, {userInfo.city} {userInfo.postal_code},
-              {userInfo.country}{" "}
+              {userInfo.country}
             </p>
             <div className="mt-3">
               <Link href="/shipping-address">
