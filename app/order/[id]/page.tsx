@@ -1,13 +1,14 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import FullPageLoader from "@/components/FullPageLoader";
 import { useOrder } from "@/hooks/useOrder";
 import ProductPrice from "@/components/Product/ProductPrice";
-import { shippingAmount } from "@/lib/constants";
+import { shippingAmount, taxAmount } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime } from "@/lib/utils";
 import { BadgeCheckIcon } from "lucide-react";
+import StripePaymentPage from "@/app/order/[id]/StripePayment";
 
 const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
@@ -17,10 +18,10 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
   if (isOrderDetailsLoading || !orderDetails?.data) return <FullPageLoader />;
 
   const orderData = orderDetails.data;
-  //console.log(orderDetails);
+  console.log(orderDetails);
 
   const shippingTotal = shippingAmount || 50;
-  const taxTotal = 0;
+  const taxTotal = taxAmount || 0;
 
   const subtotal = orderData?.items?.reduce(
     (acc: number, item: any) =>
@@ -182,6 +183,8 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
               </span>
             </div>
           </div>
+
+          <StripePaymentPage orderData={orderData} />
         </div>
       </div>
     </div>
