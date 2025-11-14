@@ -1,5 +1,7 @@
-import { apiUrl } from "@/lib/constants";
+//lib/actions/api.ts
+import { apiUrl, SERVER_URL } from "@/lib/constants";
 import { Product, ProductApiResponse } from "@/types/products";
+import { NextResponse } from "next/server";
 
 export async function fetchCategories() {
   const res = await fetch(`${apiUrl}/categories`);
@@ -34,4 +36,22 @@ export async function fetchProducts(
   const res = await fetch(`${apiUrl}/products?${params}`);
   if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
+}
+
+export async function signUp(userData: any) {
+  const res = await fetch(`${apiUrl}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data?.message || JSON.stringify(data));
+  }
+
+  return data;
 }

@@ -38,7 +38,6 @@ const PlaceOrderPage = () => {
       { cart_id: cart.data.id },
       {
         onSuccess: (res) => {
-          console.log("ORDER RESPONSE:", res);
           router.push(`/order/${res.data.order_number}`);
         },
         onError: (error: any) =>

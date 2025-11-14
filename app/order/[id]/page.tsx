@@ -1,24 +1,34 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useTransition } from "react";
 import FullPageLoader from "@/components/FullPageLoader";
 import { useOrder } from "@/hooks/useOrder";
 import ProductPrice from "@/components/Product/ProductPrice";
 import { shippingAmount, taxAmount } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime } from "@/lib/utils";
-import { BadgeCheckIcon } from "lucide-react";
+import { BadgeCheckIcon, Check } from "lucide-react";
 import StripePaymentPage from "@/app/order/[id]/StripePayment";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@/components/ui/spinner";
 
 const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  const { orderDetails, isOrderDetailsLoading } = useOrder(id);
+  const {
+    orderDetails,
+    isOrderDetailsLoading,
+    markOrderPaidMutation,
+    markOrderDeliveredMutation,
+  } = useOrder(id);
 
   if (isOrderDetailsLoading || !orderDetails?.data) return <FullPageLoader />;
 
   const orderData = orderDetails.data;
-  console.log(orderDetails);
 
   const shippingTotal = shippingAmount || 50;
   const taxTotal = taxAmount || 0;
@@ -35,6 +45,32 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
   );
 
   const grandTotal = subtotal + shippingTotal + taxTotal;
+
+  const handleMarkOrderPaid = () => {
+    markOrderPaidMutation.mutate(
+      { id: orderData.id, order_number: orderData.order_number },
+      {
+        onSuccess: (res) => {
+          toast(res.message);
+        },
+        onError: (error: any) =>
+          toast.warning(error?.message || "Something went wrong"),
+      }
+    );
+  };
+
+  const handleMarkOrderDelivered = () => {
+    markOrderDeliveredMutation.mutate(
+      { id: orderData.id, order_number: orderData.order_number },
+      {
+        onSuccess: (res) => {
+          toast(res.message);
+        },
+        onError: (error: any) =>
+          toast.warning(error?.message || "Something went wrong"),
+      }
+    );
+  };
 
   return (
     <div className="grid grid-row md:grid-cols-8 ga-5 mt-5">
@@ -64,19 +100,18 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
             <div className="mt-1">
               {orderData.status === "pending" ? (
-                <Badge variant="destructive">{orderData.payment_status}</Badge>
+                <Badge variant="destructive">{orderData.status}</Badge>
               ) : orderData.status === "processing" ? (
-                <Badge variant="destructive">{orderData.payment_status}</Badge>
+                <Badge variant="secondary" className="bg-[#37a001] text-white">
+                  {orderData.status}
+                </Badge>
               ) : orderData.status === "completed" ? (
-                <Badge
-                  variant="secondary"
-                  className="bg-blue-500 text-white dark:bg-blue-600"
-                >
-                  <BadgeCheckIcon />
-                  {orderData.payment_status}
+                <Badge variant="secondary" className="bg-[#37a001] text-white">
+                  <BadgeCheckIcon /> Delivered at
+                  {formatDateTime(orderData.updated_at!).dateTime}
                 </Badge>
               ) : (
-                <Badge variant="destructive">{orderData.payment_status}</Badge>
+                <Badge variant="destructive">{orderData.status}</Badge>
               )}
             </div>
           </div>
@@ -90,7 +125,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
             </p>
             <p className="mt-1">
               {orderData.payment_status == "paid" ? (
-                <Badge variant="secondary">
+                <Badge variant="secondary" className="bg-[#37a001] text-white">
                   Paid at {formatDateTime(orderData.updated_at!).dateTime}
                 </Badge>
               ) : (
@@ -184,7 +219,47 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
           </div>
 
-          <StripePaymentPage orderData={orderData} />
+          {orderData.payment_status != "paid" &&
+            orderData.payment_method == "stripe" && (
+              <StripePaymentPage orderData={orderData} />
+            )}
+
+          <div>{orderData.payment_status}</div>
+          <div>{orderData.payment_status}</div>
+
+          {session?.user?.role == "admin" &&
+            orderData.payment_status != "paid" &&
+            orderData.payment_method == "cod" && (
+              <button
+                onClick={handleMarkOrderPaid}
+                disabled={markOrderPaidMutation.isPending}
+                className="mt-5 w-full min-w-[250px] bg-[#37a001] text-white py-3 hover:bg-green-900 transition rounded-1xl cursor-pointer flex items-center justify-center"
+              >
+                {markOrderPaidMutation.isPending ? (
+                  <Spinner className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                &nbsp; Mark As Order Paid
+              </button>
+            )}
+
+          {session?.user?.role == "admin" &&
+            orderData.payment_status == "paid" &&
+            orderData.status != "completed" && (
+              <button
+                onClick={handleMarkOrderDelivered}
+                disabled={markOrderDeliveredMutation.isPending}
+                className="mt-5 w-full min-w-[250px] bg-[#37a001] text-white py-3 hover:bg-green-900 transition rounded-1xl cursor-pointer flex items-center justify-center"
+              >
+                {markOrderDeliveredMutation.isPending ? (
+                  <Spinner className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                &nbsp; Mark As Order Delivered
+              </button>
+            )}
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -31,31 +32,47 @@ const Menu = () => {
     );
   }
 
+  const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? "U";
+
   return (
     <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">Open</Button>
+          <Button
+            variant="ghost"
+            className="flex items-center justify-center w-10 h-10 ml-2 bg-gray-200 rounded-full relativee"
+          >
+            {firstInitial}
+          </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="w-56" align="start">
-          <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/" className="w-full">
-                Profile
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/" className="w-full">
-                Order
-              </Link>
-            </DropdownMenuItem>
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <div className="text-sm font-medium leading-none">
+                {session.user?.name}
+              </div>
+              <div className="text-sm leading-none text-muted-foreground">
+                {session.user?.email}
+              </div>
+            </div>
+          </DropdownMenuLabel>
 
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <LogoutButton />
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            {/* <Link href="/" className="w-full">
+              Profile
+            </Link> */}
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/user/orders" className="w-full">
+              Order
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <LogoutButton />
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

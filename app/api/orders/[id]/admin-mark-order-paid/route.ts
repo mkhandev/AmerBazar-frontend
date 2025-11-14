@@ -2,18 +2,27 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { apiUrl } from "@/lib/constants";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> } // params is a Promise
+) {
   try {
+    const { id } = await params;
+    if (!id) throw new Error("Order ID is required");
+
     const session = await auth();
+    const user_id = session?.user?.id;
     const accessToken = session?.accessToken;
 
-    if (!accessToken) throw new Error("Please do login");
+    if (!accessToken) throw new Error("Please login");
 
-    const res = await fetch(`${apiUrl}/user`, {
-      method: "GET",
+    const res = await fetch(`${apiUrl}/orders/${id}/order-to-paid`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
@@ -22,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     if (!res.ok) {
       return NextResponse.json(
-        { message: "Failed to fetch user info", error: data },
+        { message: "Failed to add order data", error: data },
         { status: res.status }
       );
     }
@@ -30,7 +39,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(data, { status: res.status });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to fetch user info", error },
+      { message: "Failed to add order data", error },
       { status: 500 }
     );
   }
