@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -36,13 +37,19 @@ const UserMenu = () => {
 
       <div className="block md:hidden">
         <Sheet>
-          <SheetTrigger asChild>
-            <EllipsisVertical className="text-[#FFFFFF]" />
+          <SheetTrigger className="align-middle">
+            <EllipsisVertical />
           </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle>Profile</SheetTitle>
-            </SheetHeader>
+          <SheetContent className="flex flex-col items-start px-3 py-2">
+            <SheetTitle>Menu</SheetTitle>
+            <ModeToggle />
+            <Button asChild variant="ghost">
+              <Link href="/cart">
+                <ShoppingCart /> Cart
+              </Link>
+            </Button>
+            <Menu />
+            <SheetDescription></SheetDescription>
           </SheetContent>
         </Sheet>
       </div>

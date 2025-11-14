@@ -34,8 +34,6 @@ export async function PATCH(request: Request) {
 
     const data = await res.json();
 
-    //console.log(data);
-
     if (!res.ok) {
       return NextResponse.json(
         { message: "Failed to update shipping info", error: data },

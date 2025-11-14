@@ -33,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             id: data.user.id,
             name: data.user.name,
             email: data.user.email,
+            role: data.user.role,
             token: data.token,
           };
         } catch (error) {
@@ -46,6 +47,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.accessToken = user.token as string;
         token.id = user.id;
+        token.role = user.role;
+
+        console.log(user);
 
         if (trigger === "signIn") {
           const session_cart_id = (await cookies()).get(
@@ -89,6 +93,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
       session.user.id = (token.sub ?? token.id) as string;
+      session.user.role = token.role as string;
 
       return session;
     },

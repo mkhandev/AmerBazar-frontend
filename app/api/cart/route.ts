@@ -74,8 +74,6 @@ export async function PATCH(request: Request) {
       ...(user_id && { user_id }),
     };
 
-    console.log(payload);
-
     const res = await fetch(
       `${apiUrl}/cart/${session_cart_id}/item/${body.item_id}`,
       {
@@ -84,8 +82,6 @@ export async function PATCH(request: Request) {
         body: JSON.stringify(body),
       }
     );
-
-    //console.log(res);
 
     const data = await res.json();
     return NextResponse.json(data, { status: res.status });
@@ -103,9 +99,6 @@ export async function DELETE(request: Request) {
     if (!session_cart_id) throw new Error("Cart  session not found");
 
     const body = await request.json();
-
-    console.log(body);
-    console.log(session_cart_id);
 
     const res = await fetch(
       `${apiUrl}/cart/${session_cart_id}/item/${body.item_id}`,
