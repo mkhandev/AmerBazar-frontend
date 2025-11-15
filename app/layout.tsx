@@ -8,6 +8,7 @@ import Footer from "@/components/Footer/Index";
 import { Toaster } from "@/components/ui/sonner";
 import { Roboto } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -39,6 +40,7 @@ export default function RootLayout({
               <Toaster />
               <Footer />
             </ThemeProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
           </ReactQueryProviders>
         </SessionProvider>
       </body>
