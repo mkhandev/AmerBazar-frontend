@@ -114,7 +114,7 @@ const ShippingAddressPage = () => {
         <div className="w-full">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="w-full bg-white p-5">
+              <div className="w-full p-5 bg-[var(--bg-inner)] border">
                 <h1 className="h2-bold">Shipping Address</h1>
                 <p className="text-sm text-muted-foreground mb-5">
                   Please enter shipping address info
@@ -253,7 +253,7 @@ const ShippingAddressPage = () => {
                 </div>
               </div>
 
-              <div className="w-full bg-white p-5 mt-5 ">
+              <div className="w-full p-5 mt-5  bg-[var(--bg-inner)] border">
                 <h1 className="font-normal text-[17px] mb-3">Payment Method</h1>
 
                 <div className="mb-2">
@@ -312,32 +312,24 @@ const ShippingAddressPage = () => {
       </div>
 
       <div className="col-span-2 ml-5">
-        <div className="p-5 bg-white shadow-sm text-[14px]">
-          <h2 className="text-xl font-normal mb-4 text-[#212121] text-[18px]">
+        <div className="p-5 shadow-sm text-[14px] bg-[var(--bg-inner)] text-[var(--text-inner)] border">
+          <h2 className="text-xl font-normal mb-4 text-[18px]">
             Order Summary
           </h2>
-          <div className="flex justify-between mb-2 text-[#757575]">
-            <span className="text-[#212121]">
-              Items Total ({totalItems} items)
-            </span>
-            <span className="text-[16px] text-[#202020]">
-              ${subtotal.toFixed(2)}
-            </span>
+          <div className="flex justify-between mb-2">
+            <span className="">Items Total ({totalItems} items)</span>
+            <span className="text-[16px]">${subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between mb-2">
-            <span className="text-[#212121]">Delivery Fee</span>
-            <span className="text-[16px] text-[#202020]">
-              ${shippingTotal.toFixed(2)}
-            </span>
+            <span className="">Delivery Fee</span>
+            <span className="text-[16px]">${shippingTotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between mb-2">
-            <span className="text-[#212121]">Tax</span>
-            <span className="text-[16px] text-[#202020]">
-              ${taxTotal.toFixed(2)}
-            </span>
+            <span className="">Tax</span>
+            <span className="text-[16px]">${taxTotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between mt-3 border-t pt-3">
-            <span className="text-[#202020]">Grand Total</span>
+            <span className="">Grand Total</span>
             <span className="text-[#37a001] text-[18px]">
               ${grandTotal.toFixed(2)}
             </span>

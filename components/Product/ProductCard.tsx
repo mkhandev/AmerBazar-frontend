@@ -13,7 +13,7 @@ const ProductCard = ({ product }: { product: Product }) => {
   const imageUrl = product.images?.[0]?.image || "/images/placeholder2.jpg";
 
   return (
-    <div className="bg-white hover:shadow-lg border">
+    <div className="hover:shadow-lg border bg-[var(--bg-inner)]">
       <div className="relative w-full">
         {isLoading && <Skeleton className="inset-0 w-full h-20 rounded-lg" />}
         <Link href={`/product/${product.slug}`}>
@@ -30,7 +30,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           />
         </Link>
       </div>
-      <div className="max-h-[45px] text-[14px] line-clamp-2 overflow-hidden p-2">
+      <div className="text-[var(--text-inner)] max-h-[45px] text-[14px] line-clamp-2 overflow-hidden p-2">
         <Link href={`/product/${product.slug}`}>{product.name}</Link>
       </div>
 

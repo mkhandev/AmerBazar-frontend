@@ -13,7 +13,7 @@ function OrderPage() {
   if (isOrdersLoading) return <FullPageLoader />;
 
   return (
-    <div className="w-full p-6 bg-white min-h-[60vh]">
+    <div className="w-full p-6 min-h-[60vh]  bg-[var(--bg-inner)]">
       <h1 className="text-2xl font-bold mb-6">My Orders</h1>
       <OrderTable orders={ordersData} />
     </div>

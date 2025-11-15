@@ -99,15 +99,18 @@ const SearchPageClient = ({
   if (isLoading) return <p>Loading products...</p>;
 
   return (
-    <div className="grid md:grid-cols-5 md:gap-5 bg-white mt-7">
+    <div className="grid md:grid-cols-5 md:gap-5 mt-7 bg-[var(--bg-inner)]">
       <div className="text-[#212121] ">
         <div className="p-5">
-          <h2 className="font-normal text-[20px] mb-5">Category</h2>
+          <h2 className="font-normal text-[20px] mb-5 text-[var(--text-inner)]">
+            Category
+          </h2>
           <ul>
             <Link
               className={`${
-                (category === "all" || category === "") &&
-                "font-[500] text-[#37a001]"
+                category === "all" || category === ""
+                  ? "font-[500] text-[#37a001]"
+                  : "text-[var(--text-inner)]"
               }`}
               href="#"
               onClick={(e) => {
@@ -121,7 +124,9 @@ const SearchPageClient = ({
               <li key={cat.id}>
                 <Link
                   className={`${
-                    category == cat.id && "font-[500] text-[#37a001]"
+                    category == cat.id
+                      ? "font-[500] text-[#37a001]"
+                      : "text-[var(--text-inner)]"
                   }`}
                   href="#"
                   onClick={(e) => {
@@ -137,13 +142,17 @@ const SearchPageClient = ({
         </div>
 
         <div className="p-5 pt-0">
-          <h2 className="font-normal text-[20px] mb-5">Price</h2>
+          <h2 className="font-normal text-[20px] mb-5 text-[var(--text-inner)]">
+            Price
+          </h2>
           <div>
             <ul className="space-y-1">
               <li>
                 <Link
                   className={`${
-                    price === "all" && "font-[500] text-[#37a001]"
+                    price == "all"
+                      ? "font-[500] text-[#37a001]"
+                      : "text-[var(--text-inner)]"
                   }`}
                   href="#"
                   onClick={(e) => {
@@ -158,7 +167,9 @@ const SearchPageClient = ({
                 <li key={p.value}>
                   <Link
                     className={`${
-                      price === p.value && "font-[500] text-[#37a001]"
+                      price == p.value
+                        ? "font-[500] text-[#37a001]"
+                        : "text-[var(--text-inner)]"
                     }`}
                     href="#"
                     onClick={(e) => {
@@ -175,13 +186,17 @@ const SearchPageClient = ({
         </div>
 
         <div className="p-5 pt-0">
-          <h2 className="font-normal text-[20px] mb-5">Ratings</h2>
+          <h2 className="font-normal text-[20px] mb-5 text-[var(--text-inner)]">
+            Ratings
+          </h2>
           <div>
             <ul className="space-y-1">
               <li>
                 <Link
                   className={`${
-                    rating === "all" && "font-[500] text-[#37a001]"
+                    rating == "all"
+                      ? "font-[500] text-[#37a001]"
+                      : "text-[var(--text-inner)]"
                   }`}
                   href="#"
                   onClick={(e) => {
@@ -196,7 +211,9 @@ const SearchPageClient = ({
                 <li key={r}>
                   <Link
                     className={`${
-                      rating === r.toString() && "font-[500] text-[#37a001]"
+                      rating === r.toString()
+                        ? "font-[500] text-[#37a001]"
+                        : "text-[var(--text-inner)]"
                     }`}
                     href="#"
                     onClick={(e) => {
@@ -215,7 +232,7 @@ const SearchPageClient = ({
 
       <div className="md:col-span-4 mt-5">
         <div className="flex flex-row justify-between pr-5 items-center mb-5">
-          <div className="px-5 pl-0 mb-0 text-sm text-gray-700">
+          <div className="px-5 pl-0 mb-0 text-sm text-[var(--text-inner)]">
             {q && q !== "all" && (
               <span className="mr-2">
                 <em className="font-[600] not-italic">Query: </em> {q}

@@ -99,7 +99,7 @@ const CartPage = () => {
 
               return (
                 <div
-                  className="flex flex-col md:flex-row justify-between p-3 bg-white shadow-sm gap-3 mb-3 last:mb-0"
+                  className="flex flex-col md:flex-row justify-between p-3 border shadow-sm gap-3 mb-3 last:mb-0 bg-[var(--bg-inner)]"
                   key={item.id}
                 >
                   {/* Product Image */}
@@ -116,11 +116,11 @@ const CartPage = () => {
                     <div className="flex-1">
                       <Link
                         href={`/product/${item.product.slug}`}
-                        className="text-[#212121] text-[18px] mb-2"
+                        className="text-[#212121] text-[18px] mb-2 dark:text-[var(--text-inner)]"
                       >
                         {item.product.name}
                       </Link>
-                      <div className="text-[#757575] text-[14px] mb-1">
+                      <div className="text-[#757575] dark:text-[var(--text-inner)] text-[14px] mb-1">
                         {item.product.brand ?? "No brand"}
                       </div>
 
@@ -222,32 +222,24 @@ const CartPage = () => {
           </div>
 
           {/* --- Cart Summary --- */}
-          <div className="p-5 bg-white shadow-sm text-[14px]">
-            <h2 className="text-xl font-normal mb-4 text-[#212121] text-[18px]">
+          <div className="p-5 border shadow-sm text-[14px] bg-[var(--bg-inner)]">
+            <h2 className="text-xl font-normal mb-4 text-[var(--text-inner)] text-[18px]">
               Order Summary
             </h2>
-            <div className="flex justify-between mb-2 text-[#757575]">
-              <span className="text-[#212121]">
-                Items Total ({totalItems} items)
-              </span>
-              <span className="text-[16px] text-[#202020]">
-                ${subtotal.toFixed(2)}
-              </span>
+            <div className="flex justify-between mb-2 ]text-[var(--text-inner)">
+              <span className="">Items Total ({totalItems} items)</span>
+              <span className="text-[16px] ">${subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between mb-2">
-              <span className="text-[#212121]">Shipping</span>
-              <span className="text-[16px] text-[#202020]">
-                ${shippingTotal.toFixed(2)}
-              </span>
+            <div className="flex justify-between mb-2 text-[var(--text-inner)">
+              <span className="">Shipping</span>
+              <span className="text-[16px]">${shippingTotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between mb-2">
-              <span className="text-[#212121]">Tax</span>
-              <span className="text-[16px] text-[#202020]">
-                ${taxTotal.toFixed(2)}
-              </span>
+            <div className="flex justify-between mb-2 text-[var(--text-inner)">
+              <span className="">Tax</span>
+              <span className="text-[16px]">${taxTotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between mt-3 border-t pt-3">
-              <span className="text-[#202020]">Grand Total</span>
+            <div className="flex justify-between mt-3 border-t pt-3 text-[var(--text-inner)">
+              <span className="">Grand Total</span>
               <span className="text-[#37a001] text-[18px]">
                 ${grandTotal.toFixed(2)}
               </span>

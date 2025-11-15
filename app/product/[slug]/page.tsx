@@ -35,7 +35,7 @@ const ProductPage = () => {
 
   return (
     <>
-      <section className="bg-white mt-7 p-5 pr-0 pb-0">
+      <section className="bg-[var(--bg-inner)] mt-7 p-5 pr-0 pb-0">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
           <div className="col-span-2 pb-5">
             {productImage.length === 0 ? (
@@ -95,7 +95,7 @@ const ProductPage = () => {
               />
             </div>
           </div>
-          <div className="bg-[#FAFAFA] px-5 text-[#212121] text-[14px]">
+          <div className="bg-[var(--bg-inner)] text-[var(--text-inner)] px-5 text-[14px]">
             <div className="flex flex-row gap-5 border-b border-[#DDDDDD] mb-3 pb-2">
               <Truck />
               <div>
@@ -113,7 +113,7 @@ const ProductPage = () => {
 
             <div className="mb-2">Return & Warranty</div>
 
-            <div className="flex flex-row gap-5 border-b border-[#DDDDDD] mb-5">
+            <div className="flex flex-row gap-5 border-b border-[#DDDDDD] mb-5 pb-3">
               <Siren />
               <div>14 days easy return</div>
             </div>
@@ -125,9 +125,11 @@ const ProductPage = () => {
         </div>
       </section>
 
-      <section className="bg-white mt-5 p-5">
+      <section className="mt-5 p-5 bg-[var(--bg-inner)] ">
         <div>
-          <h2 className="h2-bold pb-5 text-[22px]">Customer reviews</h2>
+          <h2 className="h2-bold pb-5 text-[22px] text-[var(--text-inner)]">
+            Customer reviews
+          </h2>
           <ReviewList reviews={product?.data.reviews || []} />
         </div>
       </section>

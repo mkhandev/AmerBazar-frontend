@@ -28,7 +28,7 @@ export default function Categories() {
   return (
     <div>
       <h1 className="text-[22px] font-normal mb-3">Categories</h1>
-      <div className="bg-white grid [grid-template-columns:repeat(auto-fit,minmax(130px,1fr))] gap-3">
+      <div className="bg-[var(--bg-inner)] grid [grid-template-columns:repeat(auto-fit,minmax(130px,1fr))] gap-3">
         {data?.map((cat: any) => (
           <Link
             key={cat.id}
