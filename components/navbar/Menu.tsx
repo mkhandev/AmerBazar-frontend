@@ -40,7 +40,7 @@ const Menu = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center justify-center w-10 h-10 ml-2 bg-gray-200 rounded-full relativee"
+            className="flex items-center justify-center w-10 h-10 ml-2 rounded-full relative cursor-pointer border"
           >
             {firstInitial}
           </Button>

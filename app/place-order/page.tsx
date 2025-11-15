@@ -66,7 +66,7 @@ const PlaceOrderPage = () => {
     <div className="grid grid-row md:grid-cols-8 ga-5 mt-5">
       <div className="md:col-span-6 mb-3">
         <div className="flex flex-row gap-3">
-          <div className="flex-1 w-full bg-white p-5">
+          <div className="flex-1 w-full p-5 bg-[var(--bg-inner)] border">
             <div className="pb-3 text-[18px]">Shipping Address</div>
             <p>{userInfo.name}</p>
             <p>
@@ -80,7 +80,7 @@ const PlaceOrderPage = () => {
             </div>
           </div>
 
-          <div className="flex-1 bg-white p-5">
+          <div className="flex-1 p-5 bg-[var(--bg-inner)] border">
             <div className="pb-3 text-[18px]">Payment Method</div>
             <p>{userInfo.payment_method}</p>
             <div className="mt-3">
@@ -92,7 +92,7 @@ const PlaceOrderPage = () => {
         </div>
 
         <div className="mt-5">
-          <div className="p-3 pb-2 text-[18px] mb-[5px] bg-white">
+          <div className="p-3 pb-2 text-[18px] mb-[5px] bg-[var(--bg-inner)] border">
             Order Items
           </div>
 
@@ -104,7 +104,7 @@ const PlaceOrderPage = () => {
 
             return (
               <div
-                className="flex flex-col md:flex-row justify-between p-3 bg-white shadow-sm gap-3 mb-3 last:mb-0"
+                className="flex flex-col md:flex-row justify-between p-3 shadow-sm gap-3 mb-3 last:mb-0 bg-[var(--bg-inner)]  text-[var(--text-inner)] border"
                 key={item.id}
               >
                 <div className="flex-none w-full md:max-w-[110px]">
@@ -117,10 +117,8 @@ const PlaceOrderPage = () => {
 
                 <div className="flex-1 md:col-span-3 flex gap-3 flex-col md:flex-row items-center justify-center">
                   <div className="flex-1">
-                    <div className="text-[#212121] text-[18px] mb-2">
-                      {item.product.name}
-                    </div>
-                    <div className="text-[#757575] text-[14px] mb-1">
+                    <div className="text-[18px] mb-2">{item.product.name}</div>
+                    <div className="text-[14px] mb-1">
                       {item.product.brand ?? "No brand"}
                     </div>
                   </div>
@@ -143,33 +141,25 @@ const PlaceOrderPage = () => {
         </div>
       </div>
       <div className="md:col-span-2  md:ml-5">
-        <div className="p-5 bg-white shadow-sm">
+        <div className="p-5 shadow-sm bg-[var(--bg-inner)] text-[var(--text-inner)] border">
           <div className="text-[14px]">
-            <h2 className="text-xl font-normal mb-4 text-[#212121] text-[18px]">
+            <h2 className="text-xl font-normal mb-4 text-[18px] text-[var(--text-inner)]">
               Order Summary
             </h2>
-            <div className="flex justify-between mb-2 text-[#757575]">
-              <span className="text-[#212121]">
-                Items Total ({totalItems} items)
-              </span>
-              <span className="text-[16px] text-[#202020]">
-                ${subtotal.toFixed(2)}
-              </span>
+            <div className="flex justify-between mb-2 ">
+              <span className="">Items Total ({totalItems} items)</span>
+              <span className="text-[16px] ">${subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="text-[#212121]">Delivery Fee</span>
-              <span className="text-[16px] text-[#202020]">
-                ${shippingTotal.toFixed(2)}
-              </span>
+              <span className="">Delivery Fee</span>
+              <span className="text-[16px] ">${shippingTotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mb-2">
-              <span className="text-[#212121]">Tax</span>
-              <span className="text-[16px] text-[#202020]">
-                ${taxTotal.toFixed(2)}
-              </span>
+              <span className="">Tax</span>
+              <span className="text-[16px] ">${taxTotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between mt-3 border-t pt-3">
-              <span className="text-[#202020]">Grand Total</span>
+              <span className="">Grand Total</span>
               <span className="text-[#37a001] text-[18px]">
                 ${grandTotal.toFixed(2)}
               </span>
