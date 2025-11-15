@@ -9,7 +9,7 @@ import ReviewList from "@/components/Review/ReviewList";
 import { Coins, Siren, Truck } from "lucide-react";
 
 import { QRCodeCanvas } from "qrcode.react";
-import { apiUrl } from "@/lib/constants";
+import { apiUrl, SERVER_URL } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import AddToCart from "@/components/Product/AddToCart";
 import Image from "next/image";
@@ -28,7 +28,7 @@ const ProductPage = () => {
 
   if (!product) return null;
 
-  const productUrl = `${apiUrl}/product/${slug}`;
+  const productUrl = `${SERVER_URL}/product/${slug}`;
 
   const productImage = product?.data?.images;
   const imageUrl = "/images/placeholder1.jpg";
@@ -36,7 +36,7 @@ const ProductPage = () => {
   return (
     <>
       <section className="bg-[var(--bg-inner)] mt-7 p-5 pr-0 pb-0">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-5">
           <div className="col-span-2 pb-5">
             {productImage.length === 0 ? (
               <div>

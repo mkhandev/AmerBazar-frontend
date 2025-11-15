@@ -73,8 +73,8 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="grid grid-row md:grid-cols-8 ga-5 mt-5">
-      <div className="md:col-span-6 mb-3">
+    <div className="grid mt-5 grid-row md:grid-cols-8 ga-5">
+      <div className="mb-3 md:col-span-6">
         <div className="flex flex-row gap-3 bg-[var(--bg-inner)] text-[var(--text-inner)]">
           <div className="flex-1 w-full p-5 border">
             <div className="pb-3 text-[18px]">Shipping Address</div>
@@ -155,7 +155,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   />
                 </div>
 
-                <div className="flex-1 md:col-span-3 flex gap-3 flex-col md:flex-row items-center justify-center">
+                <div className="flex flex-col items-center justify-center flex-1 gap-3 md:col-span-3 md:flex-row">
                   <div className="flex-1">
                     <div className="text-[18px] mb-2">{item.product.name}</div>
                     <div className="text-[14px] mb-1">
@@ -163,7 +163,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
                     </div>
                   </div>
 
-                  <div className="flex-1 flex flex-col gap-3 sm:flex-row items-center">
+                  <div className="flex flex-col items-center flex-1 gap-3 sm:flex-row">
                     <ProductPrice
                       value={Number(item.product.price)}
                       className="w-25 text-[18px] px-5 py-2 bg-[#37a001] text-white rounded-full"
@@ -171,7 +171,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   </div>
 
                   <div className="flex-1 text-[18px]">
-                    <span className="text-muted-foreground text-sm">Qty:</span>{" "}
+                    <span className="text-sm text-muted-foreground">Qty:</span>{" "}
                     {item.quantity}
                   </div>
                 </div>
@@ -181,7 +181,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
       </div>
 
-      <div className="md:col-span-2  md:ml-5">
+      <div className="md:col-span-2 md:ml-5">
         <div className="p-5 shadow-sm bg-[var(--bg-inner)]">
           <div className="text-[14px]">
             <h2 className="text-xl font-normal mb-4 text-[18px]">
@@ -205,7 +205,7 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 ${taxTotal.toFixed(2)}
               </span>
             </div>
-            <div className="flex justify-between mt-3 border-t pt-3">
+            <div className="flex justify-between pt-3 mt-3 border-t">
               <span className="">Grand Total</span>
               <span className="text-[#37a001] text-[18px]">
                 ${grandTotal.toFixed(2)}
@@ -217,9 +217,6 @@ const OrderPage = ({ params }: { params: Promise<{ id: string }> }) => {
             orderData.payment_method == "stripe" && (
               <StripePaymentPage orderData={orderData} />
             )}
-
-          <div>{orderData.payment_status}</div>
-          <div>{orderData.payment_status}</div>
 
           {session?.user?.role == "admin" &&
             orderData.payment_status != "paid" &&
