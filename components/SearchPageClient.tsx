@@ -1,5 +1,6 @@
 "use client";
 
+import FullPageLoader from "@/components/FullPageLoader";
 import ProductCard from "@/components/Product/ProductCard";
 import { Button } from "@/components/ui/button";
 import {
@@ -96,7 +97,7 @@ const SearchPageClient = ({
     router.push(`/search?${query.toString()}`);
   };
 
-  if (isLoading) return <p>Loading products...</p>;
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <div className="grid md:grid-cols-5 md:gap-5 mt-7 bg-[var(--bg-inner)]">

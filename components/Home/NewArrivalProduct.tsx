@@ -39,7 +39,7 @@ const NewArrivalProduct = () => {
           <button
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
-            className="mt-10 px-3 py-3 rounded border-2 border-[#37a001] block w-[250px] m-auto text-[20px] text-[#37a001] text-center"
+            className="mt-10 px-3 py-3 rounded border-2 border-[#37a001] block w-[250px] m-auto text-[20px] text-[#37a001] text-center cursor-pointer"
           >
             {isFetchingNextPage ? "Loading..." : "Load More"}
           </button>
