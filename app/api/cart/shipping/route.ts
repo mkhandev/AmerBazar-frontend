@@ -41,7 +41,30 @@ export async function PATCH(request: Request) {
       );
     }
 
-    return NextResponse.json(data, { status: res.status });
+    const response = NextResponse.json(
+      { success: true, data },
+      { status: res.status }
+    );
+
+    // Store cookies for middleware check user have shipping info
+    if (data.data.address) {
+      response.cookies.set("address", data.data.address, {
+        httpOnly: false,
+        path: "/",
+        maxAge: 60 * 60 * 24,
+      });
+    }
+
+    if (data.data.payment_method) {
+      response.cookies.set("payment_method", data.data.payment_method, {
+        httpOnly: false,
+        path: "/",
+        maxAge: 60 * 60 * 24,
+      });
+    }
+
+    return response;
+    //return NextResponse.json(data, { status: res.status });
   } catch (error: any) {
     return NextResponse.json(
       {

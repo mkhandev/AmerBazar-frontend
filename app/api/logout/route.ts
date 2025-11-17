@@ -28,6 +28,9 @@ export async function POST() {
   //cookies().delete("session_cart_id");
   (await cookies()).delete("session_cart_id");
 
+  (await cookies()).delete("address");
+  (await cookies()).delete("payment_method");
+
   await signOut({
     redirect: true,
     redirectTo: "/",
