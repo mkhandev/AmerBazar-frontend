@@ -22,7 +22,6 @@ export async function middleware(request: NextRequest) {
 
   const protectedPaths = [
     /^\/shipping-address/,
-    /^\/payment-method/,
     /^\/place-order/,
     /^\/profile/,
     /^\/user\/(.*)/,
@@ -38,8 +37,37 @@ export async function middleware(request: NextRequest) {
       request.cookies.get("__Secure-authjs.session-token")?.value;
 
     if (!sessionToken) {
-      return NextResponse.redirect(new URL("/signin", request.url));
+      const redirectUrl = `/signin?redirectTo=${pathname}${request.nextUrl.search}`;
+      return NextResponse.redirect(new URL(redirectUrl, request.url));
     }
+  }
+
+  //If have no shipping and payment method
+  if (pathname.startsWith("/place-order")) {
+    const address = request.cookies.get("address")?.value;
+    const payment_method = request.cookies.get("payment_method")?.value;
+
+    if (!address && !payment_method) {
+      try {
+        const baseUrl = request.nextUrl.origin;
+        const res = await fetch(`${baseUrl}/api/user`, {
+          headers: request.headers,
+        });
+
+        const userInfo = await res.json();
+
+        if (!userInfo.data.address || !userInfo.data.payment_method) {
+          return NextResponse.redirect(
+            new URL("/shipping-address", request.url)
+          );
+        }
+      } catch (err) {
+        console.log("Shipping check failed:", err);
+        return NextResponse.redirect(new URL("/shipping-address", request.url));
+      }
+    }
+
+    //console.log(address, payment_method);
   }
 
   return NextResponse.next();
