@@ -35,10 +35,8 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <Navbar />
-              <main className="container mx-auto">{children}</main>
+              {children}
               <Toaster />
-              <Footer />
             </ThemeProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </ReactQueryProviders>
