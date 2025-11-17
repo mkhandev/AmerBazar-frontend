@@ -1,6 +1,6 @@
 "use client";
 
-import OrderTable from "@/app/user/orders/OrderTable";
+import OrderTable from "./OrderTable";
 import FullPageLoader from "@/components/FullPageLoader";
 import { useOrder } from "@/hooks/useOrder";
 
@@ -14,7 +14,7 @@ function OrderPage() {
 
   return (
     <div className="w-full p-6 min-h-[60vh]  bg-[var(--bg-inner)]">
-      <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+      <h1 className="mb-6 text-2xl font-bold">My Orders</h1>
       <OrderTable orders={ordersData} />
     </div>
   );

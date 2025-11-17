@@ -8,7 +8,7 @@ import { shippingAmount, taxAmount } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime } from "@/lib/utils";
 import { BadgeCheckIcon, Check } from "lucide-react";
-import StripePaymentPage from "@/app/order/[id]/StripePayment";
+import StripePaymentPage from "./StripePayment";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
