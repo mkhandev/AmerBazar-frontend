@@ -40,7 +40,7 @@ const Menu = () => {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="flex items-center justify-center w-10 h-10 ml-2 rounded-full relative cursor-pointer border"
+            className="relative flex items-center justify-center w-10 h-10 ml-2 border rounded-full cursor-pointer"
           >
             {firstInitial}
           </Button>
@@ -58,16 +58,21 @@ const Menu = () => {
             </div>
           </DropdownMenuLabel>
 
-          <DropdownMenuItem asChild>
-            {/* <Link href="/" className="w-full">
-              Profile
-            </Link> */}
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/user/orders" className="w-full">
-              Order
-            </Link>
-          </DropdownMenuItem>
+          {session?.user?.role === "user" && (
+            <DropdownMenuItem asChild>
+              <Link href="/user/orders" className="w-full">
+                Order
+              </Link>
+            </DropdownMenuItem>
+          )}
+
+          {session?.user?.role === "admin" && (
+            <DropdownMenuItem>
+              <Link href="/admin/overview" className="w-full">
+                Admin
+              </Link>
+            </DropdownMenuItem>
+          )}
 
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>

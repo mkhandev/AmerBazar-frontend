@@ -1,7 +1,16 @@
 import { useToken } from "@/hooks/useToken";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  keepPreviousData,
+} from "@tanstack/react-query";
 
-export function useOrder(order_number?: string) {
+export function useOrder(
+  order_number?: string,
+  page: number = 1,
+  filters: any = {}
+) {
   const { getValidToken, status } = useToken();
   const token = getValidToken();
   const queryClient = useQueryClient();
@@ -23,20 +32,35 @@ export function useOrder(order_number?: string) {
   const {
     data: orders,
     isLoading: isOrdersLoading,
+    isFetching,
     error,
   } = useQuery({
-    queryKey: ["user_orders"],
+    queryKey: ["user_orders", page, filters],
     queryFn: async () => {
-      const res = await fetch(`/api/orders`);
+      const params = new URLSearchParams({
+        page: String(page),
+        ...(filters.status ? { status: filters.status } : {}),
+        ...(filters.payment_status
+          ? { payment_status: filters.payment_status }
+          : {}),
+        ...(filters.search ? { search: filters.search } : {}),
+      });
+
+      console.log(params.toString());
+
+      const res = await fetch(`/api/orders?${params.toString()}`);
       const data = await res.json();
 
       if (!res.ok) {
         if (!res.ok)
           throw new Error(data.message || "Failed to fetch user order list");
       }
+
       return data;
     },
     enabled: !!token,
+    // placeholderData just returns previous data to avoid flicker
+    placeholderData: (prevData) => prevData,
   });
 
   const markOrderPaidMutation = useMutation({
@@ -102,6 +126,7 @@ export function useOrder(order_number?: string) {
     isOrderDetailsLoading,
     orders,
     isOrdersLoading,
+    isFetching,
     markOrderPaidMutation,
     markOrderDeliveredMutation,
   };
