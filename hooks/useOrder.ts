@@ -63,6 +63,21 @@ export function useOrder(
     placeholderData: (prevData) => prevData,
   });
 
+  const { data: orderSummery, isLoading: isOrderSummeryLoading } = useQuery({
+    queryKey: ["order_summery"],
+    queryFn: async () => {
+      const res = await fetch(`/api/orders/summery`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (!res.ok)
+          throw new Error(data.message || "Failed to fetch order summery");
+      }
+      return data;
+    },
+    enabled: !!token, // run query only if token exists
+  });
+
   const markOrderPaidMutation = useMutation({
     mutationFn: async ({
       id,
@@ -129,5 +144,7 @@ export function useOrder(
     isFetching,
     markOrderPaidMutation,
     markOrderDeliveredMutation,
+    orderSummery,
+    isOrderSummeryLoading,
   };
 }

@@ -14,24 +14,24 @@ const AdminUserNavigation = () => {
       >
         Overview
       </Link>
-      <Link
+      {/* <Link
         href="/search"
         className={`${pathname === "/" ? "font-bold" : ""}  px-2`}
       >
         Products
-      </Link>
+      </Link> */}
       <Link
         href="/admin/orders"
         className={`${pathname === "/admin/orders" ? "font-bold" : ""}  px-2`}
       >
         Orders
       </Link>
-      <Link
+      {/* <Link
         href="/search"
         className={`${pathname === "/" ? "font-bold" : ""}  px-2`}
       >
         Users
-      </Link>
+      </Link> */}
     </div>
   );
 };
