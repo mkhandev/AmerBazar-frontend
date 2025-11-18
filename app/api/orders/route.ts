@@ -9,7 +9,29 @@ export async function GET(request: NextRequest) {
     const session = await auth();
     const accessToken = session?.accessToken;
 
-    const res = await fetch(`${apiUrl}/orders`, {
+    if (!accessToken) throw new Error("Please login");
+
+    const { searchParams } = new URL(request.url);
+
+    const page = searchParams.get("page") || "1";
+    const status = searchParams.get("status") || "";
+    const paymentStatus = searchParams.get("payment_status") || "";
+    const paymentMethod = searchParams.get("payment_method") || "";
+    // const customerSearch = searchParams.get("customer_search") || "";
+    // const dateFrom = searchParams.get("date_from") || "";
+    // const dateTo = searchParams.get("date_to") || "";
+
+    const queryString = new URLSearchParams({
+      page,
+      ...(status && { status }),
+      ...(paymentStatus && { payment_status: paymentStatus }),
+      ...(paymentMethod && { payment_method: paymentMethod }),
+      //...(customerSearch && { customer_search: customerSearch }),
+      //...(dateFrom && { date_from: dateFrom }),
+      //...(dateTo && { date_to: dateTo }),
+    }).toString();
+
+    const res = await fetch(`${apiUrl}/orders?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
