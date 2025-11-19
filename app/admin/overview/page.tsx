@@ -31,7 +31,7 @@ const AdminOverviewPage = () => {
     <div className="w-full p-6 bg-[var(--bg-inner)]">
       <h1 className="font-normal text-[22px] mb-5">Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="text-green-800 bg-green-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <BadgeDollarSign />
@@ -43,7 +43,7 @@ const AdminOverviewPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="text-blue-800 bg-blue-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Sales</CardTitle>
             <CreditCard />
@@ -55,7 +55,7 @@ const AdminOverviewPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="text-yellow-800 bg-yellow-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Customers</CardTitle>
             <Users />
@@ -67,7 +67,7 @@ const AdminOverviewPage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="text-pink-800 bg-pink-100">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle className="text-sm font-medium">Products</CardTitle>
             <Barcode />
