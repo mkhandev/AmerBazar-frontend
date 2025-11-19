@@ -55,7 +55,8 @@ function AdminOrderPage() {
         ),
       }),
       columnHelper.accessor("status", { header: "Order Status" }),
-      columnHelper.accessor("payment_status", {
+      columnHelper.accessor("payment_status", { header: "Payment Status" }),
+      columnHelper.accessor("payment_method", {
         header: "Payment status",
         cell: (info) => {
           const { payment_method } = info.row.original;
@@ -128,7 +129,7 @@ function AdminOrderPage() {
           }}
           className="w-full px-3 py-2 border rounded sm:w-48"
         >
-          <option value="">Deliver Status</option>
+          <option value="">Order Status</option>
           <option value="pending">Pending</option>
           <option value="processing">Processing</option>
           <option value="completed">Completed</option>
