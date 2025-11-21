@@ -20,7 +20,8 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Ghost } from "lucide-react";
+import { ArrowUpDown, CirclePlus, Ghost } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 const ProductPage = () => {
@@ -108,7 +109,18 @@ const ProductPage = () => {
 
   return (
     <div className="w-full p-6 bg-[var(--bg-inner)]">
-      <h1 className="font-normal text-[22px] mb-5">Product list</h1>
+      <div className="flex justify-between">
+        <h1 className="font-normal text-[22px] mb-5">Product list</h1>
+        <div>
+          <Link
+            href="/admin/products/add"
+            className="flex flex-row gap-2 text-[20px] text-[#37a001] justify-center"
+          >
+            <CirclePlus />
+            Product Add
+          </Link>
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
@@ -152,7 +164,16 @@ const ProductPage = () => {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header: any) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className={`border ${
+                        header.column.id === "id" ||
+                        header.column.id === "price" ||
+                        header.column.id === "stock"
+                          ? "text-center"
+                          : "text-left"
+                      }`}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -183,7 +204,16 @@ const ProductPage = () => {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={`border ${
+                        cell.column.id === "id" ||
+                        cell.column.id === "price" ||
+                        cell.column.id === "stock"
+                          ? "text-center"
+                          : "text-left"
+                      }`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

@@ -31,3 +31,23 @@ export const shippingAddressSchema = z.object({
     error: "Payment method must be CashOnDelivery or Stripe",
   }),
 });
+
+export const insertProductSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  // category: z.union([
+  //   z.number().min(1, "Select at least one category"),
+  //   z.string().min(1, "Select at least one category"),
+  // ]),
+  category_id: z.coerce.number().min(1, "Select at least one category"),
+  brand: z.string().min(3, "Brand must be at least 3 characters"),
+  price: z.coerce.number().gt(0, "Price must be greater than 0"),
+  stock: z.coerce.number().gt(0, "Stock must be greater than 0"),
+  description: z.string().min(3, "Description must be at least 3 characters"),
+  images: z
+    .any()
+    .refine((files) => files?.length > 0, "At least one image is required"),
+});
+
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Id is required"),
+});
