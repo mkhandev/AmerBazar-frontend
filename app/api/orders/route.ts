@@ -15,20 +15,16 @@ export async function GET(request: NextRequest) {
 
     const page = searchParams.get("page") || "1";
     const status = searchParams.get("status") || "";
-    const paymentStatus = searchParams.get("payment_status") || "";
-    const paymentMethod = searchParams.get("payment_method") || "";
-    // const customerSearch = searchParams.get("customer_search") || "";
-    // const dateFrom = searchParams.get("date_from") || "";
-    // const dateTo = searchParams.get("date_to") || "";
+    const order_number = searchParams.get("order_number") || "";
+    const payment_status = searchParams.get("payment_status") || "";
+    const payment_method = searchParams.get("payment_method") || "";
 
     const queryString = new URLSearchParams({
       page,
+      ...(order_number && { order_number: order_number }),
       ...(status && { status }),
-      ...(paymentStatus && { payment_status: paymentStatus }),
-      ...(paymentMethod && { payment_method: paymentMethod }),
-      //...(customerSearch && { customer_search: customerSearch }),
-      //...(dateFrom && { date_from: dateFrom }),
-      //...(dateTo && { date_to: dateTo }),
+      ...(payment_status && { payment_status: payment_status }),
+      ...(payment_method && { payment_method: payment_method }),
     }).toString();
 
     const res = await fetch(`${apiUrl}/orders?${queryString}`, {
