@@ -17,13 +17,15 @@ function AdminOrderPage() {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState("");
   const [paymentStatus, setPaymentStatus] = useState("");
-  const [search, setSearch] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [order_number, setOrderNumber] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const { orders, isOrdersLoading, isFetching } = useOrder(undefined, page, {
     status,
     payment_status: paymentStatus,
-    search,
+    payment_method: paymentMethod,
+    order_number: order_number,
   });
 
   const ordersData = orders?.data?.data ?? [];
@@ -57,7 +59,7 @@ function AdminOrderPage() {
       columnHelper.accessor("status", { header: "Order Status" }),
       columnHelper.accessor("payment_status", { header: "Payment Status" }),
       columnHelper.accessor("payment_method", {
-        header: "Payment status",
+        header: "Payment Method",
         cell: (info) => {
           const { payment_method } = info.row.original;
           if (payment_method === "cod")
@@ -114,10 +116,10 @@ function AdminOrderPage() {
         <input
           type="text"
           placeholder="Search Order ID..."
-          value={search}
+          value={order_number}
           onChange={(e) => {
             setPage(1);
-            setSearch(e.target.value);
+            setOrderNumber(e.target.value);
           }}
           className="w-full px-3 py-2 border rounded sm:w-48"
         />
@@ -147,6 +149,19 @@ function AdminOrderPage() {
           <option value="pending">Pending</option>
           <option value="paid">Paid</option>
           <option value="failed">Failed</option>
+        </select>
+
+        <select
+          value={paymentMethod}
+          onChange={(e) => {
+            setPage(1);
+            setPaymentMethod(e.target.value);
+          }}
+          className="w-full px-3 py-2 border rounded sm:w-48"
+        >
+          <option value="">Payment method</option>
+          <option value="cod">Cash on Delivery</option>
+          <option value="stripe">Stripe</option>
         </select>
       </div>
 
@@ -208,7 +223,7 @@ function AdminOrderPage() {
                   colSpan={table.getVisibleFlatColumns().length}
                   className="px-3 py-6 italic text-center text-gray-500"
                 >
-                  📭 No records found
+                  No records found
                 </td>
               </tr>
             ) : (

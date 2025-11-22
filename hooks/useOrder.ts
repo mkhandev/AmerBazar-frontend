@@ -39,11 +39,14 @@ export function useOrder(
     queryFn: async () => {
       const params = new URLSearchParams({
         page: String(page),
+        ...(filters.order_number ? { order_number: filters.order_number } : {}),
         ...(filters.status ? { status: filters.status } : {}),
         ...(filters.payment_status
           ? { payment_status: filters.payment_status }
           : {}),
-        ...(filters.search ? { search: filters.search } : {}),
+        ...(filters.payment_method
+          ? { payment_method: filters.payment_method }
+          : {}),
       });
 
       console.log(params.toString());
