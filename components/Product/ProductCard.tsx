@@ -10,7 +10,10 @@ import Link from "next/link";
 const ProductCard = ({ product }: { product: Product }) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const imageUrl = product.images?.[0]?.image || "/images/placeholder2.jpg";
+  const mainImage = product.images?.find((img) => img.is_main)?.image;
+
+  const imageUrl =
+    mainImage || product.images?.[0]?.image || "/images/placeholder2.jpg";
 
   return (
     <div className="hover:shadow-lg border bg-[var(--bg-inner)]">
@@ -34,7 +37,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Link href={`/product/${product.slug}`}>{product.name}</Link>
       </div>
 
-      <div className="flex gap-1 justify-between p-2 pt-0">
+      <div className="flex justify-between gap-1 p-2 pt-0">
         <Rating value={Number(product.rating)} />
         {product.stock > 0 ? (
           <ProductPrice value={Number(product.price)} />

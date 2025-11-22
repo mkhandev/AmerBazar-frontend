@@ -13,7 +13,7 @@ export async function fetchProduct(
   slug: string
 ): Promise<{ success: boolean; message: string; data: Product }> {
   const res = await fetch(`${apiUrl}/products/${slug}`);
-  if (!res.ok) throw new Error("Failed to fetch categories");
+  if (!res.ok) throw new Error("Failed to fetch product");
   return res.json();
 }
 

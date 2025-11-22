@@ -72,3 +72,13 @@ export const shippingAddressDefaultValues: z.infer<
 
 export const shippingAmount = 50.0;
 export const taxAmount = 0;
+
+export const productDefaultValues = {
+  name: "",
+  category_id: 0,
+  brand: "",
+  price: 0,
+  stock: 0,
+  description: "",
+  status: "1",
+};

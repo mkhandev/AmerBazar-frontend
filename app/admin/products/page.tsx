@@ -1,5 +1,6 @@
 "use client";
 
+import EditDeleteAction from "@/app/admin/products/EditDeleteAction";
 import FullPageLoader from "@/components/FullPageLoader";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useProduct } from "@/hooks/useProduct";
+import { fetchCategories } from "@/lib/actions/api";
 import { formatCurrency } from "@/lib/utils";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createColumnHelper,
   flexRender,
@@ -20,17 +23,28 @@ import {
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Ghost } from "lucide-react";
+import { ArrowUpDown, CirclePlus, Ghost } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 const ProductPage = () => {
   const [page, setPage] = useState(1);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState("all");
   const [q, setSearch] = useState("");
 
+  const [category, setCategory] = useState("");
+  const {
+    data: categoryList,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["categories"],
+    queryFn: fetchCategories,
+  });
+
   const { productList, isLoadingProductList, isProductListFetching } =
-    useProduct(undefined, page, { status, q });
+    useProduct(undefined, page, { category, status, q });
 
   const productData = productList?.data ?? [];
   const currentPage = productList?.current_page ?? 1;
@@ -39,13 +53,19 @@ const ProductPage = () => {
   const productTo = productList?.to;
   const productTotal = productList?.total;
 
-  console.log(productList);
+  //console.log(productList);
 
   const columnHelper = createColumnHelper<any>();
+
+  const queryClient = useQueryClient();
 
   const columns = [
     columnHelper.accessor("id", { header: "ID" }),
     columnHelper.accessor("name", { header: "Name" }),
+    columnHelper.accessor("category.name", {
+      header: "Category",
+      cell: (info) => info.getValue() ?? "-",
+    }),
     columnHelper.accessor("price", {
       header: (ctx) => {
         return (
@@ -93,6 +113,15 @@ const ProductPage = () => {
         }
       },
     }),
+    columnHelper.display({
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        const id = row.original.id;
+
+        return <EditDeleteAction id={id} />;
+      },
+    }),
   ];
 
   const table = useReactTable({
@@ -104,11 +133,33 @@ const ProductPage = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoadingProductList) return <FullPageLoader />;
+  if (isLoadingProductList || isLoading) return <FullPageLoader />;
+
+  const handleDelete = async (id: number) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      alert("Product deleted");
+      setPage(1);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="w-full p-6 bg-[var(--bg-inner)]">
-      <h1 className="font-normal text-[22px] mb-5">Product list</h1>
+      <div className="flex justify-between">
+        <h1 className="font-normal text-[22px] mb-5">Product list</h1>
+        <div>
+          <Link
+            href="/admin/products/add"
+            className="flex flex-row gap-2 text-[20px] text-[#37a001] justify-center"
+          >
+            <CirclePlus />
+            Product Add
+          </Link>
+        </div>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
@@ -124,14 +175,30 @@ const ProductPage = () => {
         />
 
         <select
-          value={status}
+          value={category}
           onChange={(e) => {
             setPage(1);
-            setStatus(Number(e.target.value));
+            setCategory(e.target.value);
           }}
           className="w-full px-3 py-2 border rounded sm:w-48"
         >
-          <option value="">Status</option>
+          <option value="all">All Category</option>
+          {categoryList.map((cat: any) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={status}
+          onChange={(e) => {
+            setPage(1);
+            setStatus(e.target.value);
+          }}
+          className="w-full px-3 py-2 border rounded sm:w-48"
+        >
+          <option value="all">All Status</option>
           <option value="1">Active</option>
           <option value="0">Inactive</option>
         </select>
@@ -152,7 +219,17 @@ const ProductPage = () => {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header: any) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className={`border ${
+                        header.column.id === "id" ||
+                        header.column.id === "price" ||
+                        header.column.id === "stock" ||
+                        header.column.id === "actions"
+                          ? "text-center"
+                          : "text-left"
+                      }`}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -183,7 +260,16 @@ const ProductPage = () => {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={`border ${
+                        cell.column.id === "id" ||
+                        cell.column.id === "price" ||
+                        cell.column.id === "stock"
+                          ? "text-center"
+                          : "text-left"
+                      }`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
