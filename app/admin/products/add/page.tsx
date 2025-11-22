@@ -1,4 +1,4 @@
-import ProductForm from "@/app/admin/products/add/ProductForm";
+import ProductForm from "@/app/admin/products/ProductForm";
 import React from "react";
 
 const ProductPage = () => {

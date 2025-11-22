@@ -80,4 +80,5 @@ export const productDefaultValues = {
   price: 0,
   stock: 0,
   description: "",
+  status: "1",
 };

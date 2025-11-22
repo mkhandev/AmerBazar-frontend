@@ -14,10 +14,12 @@ export async function GET(request: NextRequest) {
 
     const page = searchParams.get("page") || "1";
     const q = searchParams.get("q") || "";
+    const category = searchParams.get("category");
     const status = searchParams.get("status");
 
     const queryString = new URLSearchParams({
       page,
+      ...(category && { category }),
       ...(status && { status }),
       ...(q && { q }),
     }).toString();
@@ -72,7 +74,7 @@ export async function POST(request: Request) {
 
     const data = await res.json();
 
-    console.log(data);
+    // console.log(data);
 
     if (!res.ok) {
       return NextResponse.json(
