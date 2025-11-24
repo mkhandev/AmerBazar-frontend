@@ -25,8 +25,6 @@ const AdminOverviewPage = () => {
 
   const orderData = orderSummery?.data;
 
-  console.log(orderData);
-
   return (
     <div className="w-full p-6 bg-[var(--bg-inner)]">
       <h1 className="font-normal text-[22px] mb-5">Dashboard</h1>
