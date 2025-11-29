@@ -20,6 +20,7 @@ export function useCart() {
       }
       return data;
     },
+    refetchOnWindowFocus: false,
   });
 
   const { data: userInfo, isLoading: isUserInfoLoading } = useQuery({
@@ -31,6 +32,7 @@ export function useCart() {
       if (!res.ok) throw new Error(data.message || "Failed to fetch user info");
       return data.data;
     },
+    refetchOnWindowFocus: false,
   });
 
   const addMutation = useMutation({
@@ -150,7 +152,11 @@ export function useCart() {
 
       return data;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+
+    onSuccess: () => {
+      // CLEAR CART CACHE WITHOUT API CALL
+      queryClient.setQueryData(["cart"], null);
+    },
   });
 
   return {
