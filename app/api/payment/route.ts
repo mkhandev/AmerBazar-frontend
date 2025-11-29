@@ -11,7 +11,10 @@ export async function POST(req: Request) {
     const lineItems = [
       ...order_data.items.map((item: any) => {
         const product = item.product;
-        const imageUrls = product.images?.map((img: any) => img.image) || [];
+        const imageUrls =
+          product.images
+            ?.filter((img: any) => img.is_main)
+            .map((img: any) => img.image) || [];
 
         return {
           price_data: {
@@ -43,7 +46,16 @@ export async function POST(req: Request) {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
+      payment_intent_data: {
+        metadata: {
+          //payment_intent.succeeded webhook.
+          order_id: order_data.id,
+          user_id: order_data.user_id,
+          order_number: order_data.order_number,
+        },
+      },
       metadata: {
+        //checkout.session.completed webhook.
         order_id: order_data.id,
         user_id: order_data.user_id,
         order_number: order_data.order_number,
