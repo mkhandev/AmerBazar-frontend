@@ -27,7 +27,10 @@ export async function POST(req: Request) {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
       const order_id = paymentIntent.metadata?.order_id;
-      console.log("Payment succeeded for order:", order_id);
+      const user_id = paymentIntent.metadata?.user_id;
+
+      console.log("Payment succeeded for order_id:", order_id);
+      console.log("Payment succeeded for user_id:", user_id);
       console.log("Payment succeeded for paymentIntent id:", paymentIntent.id);
 
       if (order_id) {
@@ -37,10 +40,12 @@ export async function POST(req: Request) {
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
-              Authorization: `Bearer ${accessToken}`,
+              //Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${process.env.MANUAL_MATCH_STRIPE_PAYMENT_SECRET}`,
             },
             body: JSON.stringify({
               status: "paid",
+              user_id: user_id,
               payment_intent_id: paymentIntent.id,
             }),
           });
